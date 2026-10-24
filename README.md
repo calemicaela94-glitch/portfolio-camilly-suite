@@ -80,8 +80,10 @@ basta acrescentar um objeto ao array — o layout adapta-se.
 - **Responsivo:** mobile-first; grelhas passam de 1 → 2 → 3 colunas; menu hambúrguer abaixo de `md`.
 - **Acessibilidade:** foco visível em todos os elementos interativos, `aria-label` na navegação, elementos decorativos com `aria-hidden`.
 - **SEO básico:** `title`, `description` e Open Graph no [`index.html`](index.html).
-- **Link da Play Store:** `https://play.google.com/store/apps/details?id=com.camillyreading.app`
-  (só abre a ficha pública depois de a app estar publicada em produção na loja).
+- **Link da Play Store:** `https://play.google.com/store/apps/details?id=com.camillyreading.tracker`
+  (verificado a 24/10/2026: HTTP 200, app publicada por "Micaela Calé", categoria "Livros e referências").
+  ⚠️ O `applicationId` do build local em `camilly-readingtracker/android/app/build.gradle` é
+  `com.camillyreading.app` — **não é** o id publicado. Usar sempre `com.camillyreading.tracker` em links públicos.
 
 ---
 

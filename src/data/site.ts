@@ -100,7 +100,7 @@ export const projetoDestaque = {
     "Sincronização entre dispositivos e conta segura",
     "Publicação e manutenção na Google Play Store",
   ],
-  linkLoja: "https://play.google.com/store/apps/details?id=com.camillyreading.app",
+  linkLoja: "https://play.google.com/store/apps/details?id=com.camillyreading.tracker",
   stack: ["React Native", "Expo", "TypeScript", "Supabase", "Notificações push"],
   metricas: [
     { valor: "Em produção", legenda: "publicada na loja" },
@@ -235,7 +235,7 @@ export const contacto = {
     },
     {
       rotulo: "Ver a Reading Tracker na Play Store",
-      href: "https://play.google.com/store/apps/details?id=com.camillyreading.app",
+      href: "https://play.google.com/store/apps/details?id=com.camillyreading.tracker",
       variante: "secundario",
       externo: true,
     },
