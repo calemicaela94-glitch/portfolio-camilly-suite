@@ -14,8 +14,8 @@ export function FeaturedProject() {
     <Section
       id="projetos"
       eyebrow={projetoDestaque.eyebrow}
-      titulo="Uma app real, a correr no telemóvel de utilizadores reais"
-      descricao="Não é uma maquete nem um protótipo: é software publicado, com utilizadores, atualizações e manutenção."
+      titulo="Uma app real, na loja e a funcionar"
+      descricao="Software publicado, com utilizadores e manutenção. Não é maquete."
     >
       <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-transparent p-6 shadow-card sm:p-10">
         {/* Brilho de fundo */}
@@ -44,7 +44,7 @@ export function FeaturedProject() {
             </p>
 
             {/* O que a app faz */}
-            <ul className="mt-7 grid gap-2.5 sm:grid-cols-2">
+            <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
               {projetoDestaque.destaques.map((item) => (
                 <li key={item} className="flex items-start gap-2 text-[13px] leading-snug text-slate-300">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-petal-mint" />

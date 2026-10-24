@@ -59,9 +59,7 @@ export function Services() {
         </ol>
 
         <div className="mt-9 flex flex-col gap-3 border-t border-white/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-slate-400">
-            Tens só uma ideia num papel? É o suficiente para começar a conversa.
-          </p>
+          <p className="text-sm text-slate-400">Só tens a ideia? Chega para começar.</p>
           <Button href="#contacto" variante="primario">
             Pedir orçamento
             <ArrowUpRight className="h-4 w-4" />

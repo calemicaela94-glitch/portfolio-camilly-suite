@@ -1,6 +1,7 @@
 import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { FeaturedProject } from "./components/FeaturedProject";
+import { OutrosProjetos } from "./components/OutrosProjetos";
 import { SuiteSection } from "./components/SuiteSection";
 import { Services } from "./components/Services";
 import { Contact } from "./components/Contact";
@@ -18,6 +19,7 @@ export default function App() {
       <main>
         <Hero />
         <FeaturedProject />
+        <OutrosProjetos />
         <SuiteSection />
         <Services />
         <Contact />
