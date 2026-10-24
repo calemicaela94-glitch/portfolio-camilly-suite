@@ -64,7 +64,7 @@ export interface Projeto {
 export const dadosPessoais = {
   nome: "Camilly",
   autora: "Micaela Calé",
-  papel: "Desenvolvedora de Software",
+  papel: "Software Developer",
   email: "calemicaela94@gmail.com",
   /**
    * Endpoint que recebe os pedidos de orçamento e os entrega por email
@@ -85,7 +85,7 @@ export const navegacao: { rotulo: string; href: string }[] = [
 
 export const hero = {
   badge: "Disponível para novos projetos",
-  titulo: "Desenvolvedora de Software & Criadora da Camilly Suite",
+  titulo: "Software Developer & Criadora da Camilly Suite",
   tituloRealce: "Camilly Suite",
   subtitulo:
     "Transformo ideias em aplicações móveis e web funcionais, escaláveis e com IA integrada. Do conceito à produção na Google Play Store.",
