@@ -15,4 +15,10 @@ export default defineConfig({
     // Sem isto o Vite responde "Blocked request. This host is not allowed."
     allowedHosts: [".ts.net", "rog-vscode-micaela.tailc3809d.ts.net", "localhost", "127.0.0.1"],
   },
+  // Servidor estático usado para o link público (túnel Cloudflare / qualquer domínio).
+  preview: {
+    host: true,
+    port: 4173,
+    allowedHosts: true,
+  },
 });
