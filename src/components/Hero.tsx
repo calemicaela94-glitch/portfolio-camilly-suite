@@ -3,7 +3,7 @@ import { hero } from "../data/site";
 import { Badge } from "./ui/Badge";
 import { Button } from "./ui/Button";
 import { PetalGlow } from "./ui/PetalGlow";
-import { PhoneMock } from "./PhoneMock";
+import { SuiteCard } from "./SuiteCard";
 
 /** Secção de abertura: identidade, proposta de valor e chamadas à ação. */
 export function Hero() {
@@ -70,13 +70,10 @@ export function Hero() {
             </dl>
           </div>
 
-          {/* Coluna visual */}
+          {/* Coluna visual — prévia da suite (o telemóvel fica só no projeto em destaque) */}
           <div className="relative animate-fade-up [animation-delay:150ms]">
             <div className="animate-float">
-              <PhoneMock />
-            </div>
-            <div className="mt-8 flex justify-center lg:mt-10">
-              <Badge cor="rose">Camilly Reading Tracker · em produção</Badge>
+              <SuiteCard />
             </div>
           </div>
         </div>
