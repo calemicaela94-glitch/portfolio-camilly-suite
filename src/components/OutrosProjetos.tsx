@@ -12,7 +12,7 @@ export function OutrosProjetos() {
       titulo={outrosProjetos.titulo}
       descricao={outrosProjetos.descricao}
     >
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {outrosProjetos.itens.map((projeto) => {
           const cor = acento[projeto.cor];
           return (
@@ -27,6 +27,9 @@ export function OutrosProjetos() {
                   </li>
                 ))}
               </ul>
+              <p className="mt-4 border-t border-white/10 pt-3 text-[10px] uppercase tracking-wider text-slate-500">
+                {projeto.estado}
+              </p>
             </article>
           );
         })}

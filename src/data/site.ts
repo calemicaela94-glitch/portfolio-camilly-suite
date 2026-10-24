@@ -52,6 +52,7 @@ export interface Servico {
 export interface Projeto {
   nome: string;
   tipo: string;
+  estado: string;
   descricao: string;
   stack: string[];
   cor: "rose" | "lilac" | "mint" | "amber" | "sky";
@@ -59,6 +60,7 @@ export interface Projeto {
 
 export const dadosPessoais = {
   nome: "Camilly",
+  autora: "Micaela Calé",
   papel: "Desenvolvedora de Software",
   email: "calemicaela94@gmail.com",
   localizacao: "Portugal · remoto",
@@ -158,12 +160,13 @@ export const suite = {
 /** Trabalho para clientes — áreas diferentes, o mesmo rigor. */
 export const outrosProjetos = {
   eyebrow: "Outros projetos",
-  titulo: "Apps para clientes, de áreas bem diferentes",
-  descricao: "Estética, formação médica, saúde dentária, produtividade.",
+  titulo: "Outros projetos em desenvolvimento",
+  descricao: "Estética, formação médica e produtividade — áreas bem diferentes, o mesmo rigor.",
   itens: [
     {
       nome: "Cat Lash Designer",
       tipo: "Cliente · estética",
+      estado: "Em desenvolvimento",
       descricao: "Marcações online com disponibilidade em tempo real e painel de gestão.",
       stack: ["React", "TypeScript"],
       cor: "rose",
@@ -171,22 +174,17 @@ export const outrosProjetos = {
     {
       nome: "Mediject Training",
       tipo: "Cliente · formação",
+      estado: "Em desenvolvimento",
       descricao: "PWA de apresentação: eventos, serviços, equipa e reservas.",
       stack: ["Next.js", "PWA"],
       cor: "sky",
     },
     {
-      nome: "Clínica Doutora Sheila",
-      tipo: "Cliente · saúde",
-      descricao: "App da clínica com autenticação e dados em Supabase.",
-      stack: ["React", "Supabase"],
-      cor: "mint",
-    },
-    {
-      nome: "Growth Petal",
+      nome: "My Daily Tracker",
       tipo: "Produto próprio",
-      descricao: "Hábitos e Buddys de IA, também como app Android.",
-      stack: ["React", "IA", "Capacitor"],
+      estado: "Em desenvolvimento",
+      descricao: "Painel de vida diária: rotinas, sono, finanças, família e IA.",
+      stack: ["React", "TanStack"],
       cor: "lilac",
     },
   ] as Projeto[],
@@ -255,4 +253,5 @@ export const contacto = {
 
 export const rodape = {
   nota: "Portefólio da Camilly · React + Vite + Tailwind",
+  credito: "Desenvolvido por: Micaela Calé",
 };

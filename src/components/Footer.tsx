@@ -1,6 +1,6 @@
 import { dadosPessoais, navegacao, rodape } from "../data/site";
 
-/** Rodapé minimalista com marca, navegação e nota de copyright. */
+/** Rodapé minimalista com marca, navegação e crédito da autora. */
 export function Footer() {
   return (
     <footer className="border-t border-white/10 bg-ink-950 py-10">
@@ -29,8 +29,9 @@ export function Footer() {
         </nav>
       </div>
 
-      <div className="container-page mt-6">
-        <p className="text-center text-[11px] text-slate-600 sm:text-left">{rodape.nota}</p>
+      <div className="container-page mt-6 flex flex-col items-center gap-1 border-t border-white/5 pt-4 sm:flex-row sm:justify-between">
+        <p className="text-[11px] text-slate-600">{rodape.nota}</p>
+        <p className="text-[11px] font-medium text-slate-400">{rodape.credito}</p>
       </div>
     </footer>
   );
