@@ -73,6 +73,23 @@ basta acrescentar um objeto ao array — o layout adapta-se.
 
 ---
 
+## Formulário de orçamento
+
+O botão **Pedir orçamento** (navbar, topo, serviços e contacto) abre um modal
+([`FormularioOrcamento.tsx`](src/components/orcamento/FormularioOrcamento.tsx))
+com Nome, Email, Tipo de projeto e Mensagem.
+
+- Envia por `POST` para `dadosPessoais.endpointFormulario` em
+  [`src/data/site.ts`](src/data/site.ts) — **FormSubmit**, que entrega o pedido
+  por email em `calemicaela94@gmail.com`. Grátis, sem conta.
+- A primeira submissão obriga a **ativar o formulário** através do link que o
+  FormSubmit envia para esse email (só uma vez).
+- Se o serviço falhar, o modal mostra o plano B: abrir no email do visitante com
+  tudo preenchido (`mailto:`) ou copiar o endereço.
+- Para voltar ao modo `mailto` puro, basta pôr `endpointFormulario: ""`.
+
+---
+
 ## Detalhes técnicos
 
 - **Sem dependências pesadas:** React, `lucide-react` (ícones) e Tailwind. Sem bibliotecas de animação.
