@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// O `base` é injetado pelo script `dev:preview` (--base=/absproxy/5173/) para o
-// code-server servir a app por proxy sem perder os caminhos dos assets.
-// Em produção (Vercel/Netlify/Cloudflare Pages) fica sempre na raiz "/".
+// `base`:
+//  - dev/preview local: "/" ou o proxy do code-server (--base=/absproxy/5173/)
+//  - GitHub Pages (link público): "/portfolio-camilly-suite/" (ver .github/workflows/deploy-pages.yml)
 export default defineConfig({
+  base: process.env.VITE_BASE ?? "/",
   plugins: [react()],
   server: {
     host: true,
