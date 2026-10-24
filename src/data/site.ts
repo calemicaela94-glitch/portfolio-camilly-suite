@@ -20,7 +20,10 @@ import {
 
 export interface Acao {
   rotulo: string;
-  href: string;
+  /** Link normal. Omitir quando a ação é abrir o formulário de orçamento. */
+  href?: string;
+  /** `orcamento` abre a caixa de mensagem em vez de navegar. */
+  acao?: "orcamento";
   variante: "primario" | "secundario" | "fantasma";
   externo?: boolean;
 }
@@ -82,7 +85,7 @@ export const hero = {
     "Transformo ideias em aplicações móveis e web funcionais, escaláveis e com IA integrada. Do conceito à produção na Google Play Store.",
   acoes: [
     { rotulo: "Ver Projetos", href: "#projetos", variante: "primario" },
-    { rotulo: "Contactar / Pedir Orçamento", href: "#contacto", variante: "secundario" },
+    { rotulo: "Contactar / Pedir Orçamento", acao: "orcamento", variante: "secundario" },
   ] as Acao[],
   metricas: [
     { valor: "Play Store", legenda: "app publicada" },
@@ -233,9 +236,8 @@ export const contacto = {
   acoes: [
     {
       rotulo: "Contactar / Pedir Orçamento",
-      href: `mailto:calemicaela94@gmail.com?subject=${encodeURIComponent("Pedido de orçamento — portefólio")}`,
+      acao: "orcamento",
       variante: "primario",
-      externo: true,
     },
     {
       rotulo: "Ver na Play Store",

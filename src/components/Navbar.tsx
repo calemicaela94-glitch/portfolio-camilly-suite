@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { dadosPessoais, navegacao } from "../data/site";
 import { Button } from "./ui/Button";
+import { useOrcamento } from "./orcamento/contexto";
 
 /** Cabeçalho fixo com navegação por âncoras e menu móvel. */
 export function Navbar() {
+  const { abrir } = useOrcamento();
   const [aberto, setAberto] = useState(false);
   const [comFundo, setComFundo] = useState(false);
 
@@ -43,7 +45,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:block">
-          <Button href="#contacto" variante="primario" className="px-5 py-2.5 text-sm">
+          <Button variante="primario" onClick={abrir} className="px-5 py-2.5 text-sm">
             Pedir orçamento
           </Button>
         </div>
@@ -75,7 +77,14 @@ export function Navbar() {
               </a>
             ))}
           </nav>
-          <Button href="#contacto" variante="primario" onClick={() => setAberto(false)} className="mt-4 w-full">
+          <Button
+            variante="primario"
+            onClick={() => {
+              setAberto(false);
+              abrir();
+            }}
+            className="mt-4 w-full"
+          >
             Pedir orçamento
           </Button>
         </div>

@@ -3,9 +3,11 @@ import { servicos } from "../data/site";
 import { acento } from "../lib/cores";
 import { Button } from "./ui/Button";
 import { Section } from "./ui/Section";
+import { useOrcamento } from "./orcamento/contexto";
 
 /** Secção comercial: o que a Camilly faz por um cliente, e como trabalha. */
 export function Services() {
+  const { abrir } = useOrcamento();
   return (
     <Section
       id="servicos"
@@ -60,7 +62,7 @@ export function Services() {
 
         <div className="mt-9 flex flex-col gap-3 border-t border-white/10 pt-7 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-sm text-slate-400">Só tens a ideia? Chega para começar.</p>
-          <Button href="#contacto" variante="primario">
+          <Button variante="primario" onClick={abrir}>
             Pedir orçamento
             <ArrowUpRight className="h-4 w-4" />
           </Button>

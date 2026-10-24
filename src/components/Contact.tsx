@@ -2,9 +2,11 @@ import { Mail } from "lucide-react";
 import { contacto, dadosPessoais } from "../data/site";
 import { Button } from "./ui/Button";
 import { PetalGlow } from "./ui/PetalGlow";
+import { useOrcamento } from "./orcamento/contexto";
 
 /** Última chamada à ação: contacto direto e garantias do processo. */
 export function Contact() {
+  const { abrir } = useOrcamento();
   return (
     <section id="contacto" className="relative overflow-hidden py-20 sm:py-28">
       <PetalGlow className="left-1/2 top-0 h-72 w-[34rem] -translate-x-1/2 rounded-full bg-petal-lilac/15" />
@@ -22,7 +24,7 @@ export function Contact() {
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Button href={contacto.acoes[0].href} variante="primario">
+            <Button variante="primario" onClick={abrir}>
               <Mail className="h-4 w-4" />
               {contacto.acoes[0].rotulo}
             </Button>

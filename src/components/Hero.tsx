@@ -4,9 +4,11 @@ import { Badge } from "./ui/Badge";
 import { Button } from "./ui/Button";
 import { PetalGlow } from "./ui/PetalGlow";
 import { SuiteCard } from "./SuiteCard";
+import { useOrcamento } from "./orcamento/contexto";
 
 /** Secção de abertura: identidade, proposta de valor e chamadas à ação. */
 export function Hero() {
+  const { abrir } = useOrcamento();
   // Divide o título para aplicar o gradiente das pétalas só na marca "Camilly Suite".
   const [antes, depois] = hero.titulo.split(hero.tituloRealce);
 
@@ -41,7 +43,7 @@ export function Hero() {
                 {hero.acoes[0].rotulo}
                 <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button href={hero.acoes[1].href} variante="secundario">
+              <Button variante="secundario" onClick={abrir}>
                 <Mail className="h-4 w-4" />
                 {hero.acoes[1].rotulo}
               </Button>
