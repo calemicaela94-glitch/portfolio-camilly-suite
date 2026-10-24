@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Check, Copy, Mail, Send, X } from "lucide-react";
+import { AlertTriangle, Check, Copy, Mail, Send, X } from "lucide-react";
 import { dadosPessoais } from "../../data/site";
 
 interface Props {
@@ -15,13 +15,15 @@ const TIPOS = [
   "Outro",
 ];
 
+type Estado = "formulario" | "a-enviar" | "enviado" | "plano-b";
+
 /**
  * Caixa de mensagem para pedir orçamento.
  *
- * Sem backend: ao submeter, monta um email já preenchido (nome, email, tipo de
- * projeto e mensagem) e abre a app de email do visitante. Se um dia houver um
- * endpoint de formulário, basta preencher `endpointFormulario` em site.ts — o
- * código passa a enviar por POST em vez de abrir o email.
+ * Fluxo: valida → envia por POST para `dadosPessoais.endpointFormulario`
+ * (FormSubmit, que entrega o pedido na caixa de email da Micaela) → mostra
+ * confirmação. Se o serviço falhar (sem rede, serviço em baixo), cai para o
+ * plano B: abre a app de email do visitante com tudo preenchido (`mailto:`).
  */
 export function FormularioOrcamento({ aberto, fechar }: Props) {
   const [nome, setNome] = useState("");
@@ -29,7 +31,8 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
   const [tipo, setTipo] = useState(TIPOS[0]);
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState<string | null>(null);
-  const [enviado, setEnviado] = useState(false);
+  const [estado, setEstado] = useState<Estado>("formulario");
+  const [nota, setNota] = useState("");
   const [linkEmail, setLinkEmail] = useState("");
   const [copiado, setCopiado] = useState(false);
   const primeiroCampo = useRef<HTMLInputElement>(null);
@@ -52,28 +55,21 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
     };
   }, [aberto, fechar]);
 
-  // Reinicia o formulário quando fecha
+  // Ao fechar, volta ao início (com um pequeno atraso para não piscar)
   useEffect(() => {
     if (aberto) return;
     const t = setTimeout(() => {
       setErro(null);
-      setEnviado(false);
+      setNota("");
       setCopiado(false);
-    }, 200);
+      setEstado("formulario");
+    }, 250);
     return () => clearTimeout(t);
   }, [aberto]);
 
   if (!aberto) return null;
 
-  const submeter = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (nome.trim().length < 2) return setErro("Escreve o teu nome.");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setErro("Email inválido.");
-    if (mensagem.trim().length < 10) return setErro("Conta-me um pouco mais (mínimo 10 caracteres).");
-
-    setErro(null);
-
+  const construirLinkEmail = () => {
     const assunto = `Pedido de orçamento — ${tipo}`;
     const corpo = [
       `Nome: ${nome.trim()}`,
@@ -82,14 +78,68 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
       "",
       mensagem.trim(),
     ].join("\n");
-
-    const link = `mailto:${dadosPessoais.email}?subject=${encodeURIComponent(
+    return `mailto:${dadosPessoais.email}?subject=${encodeURIComponent(
       assunto,
     )}&body=${encodeURIComponent(corpo)}`;
+  };
 
-    setLinkEmail(link);
-    setEnviado(true);
-    window.location.href = link;
+  const submeter = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (nome.trim().length < 2) return setErro("Escreve o teu nome.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setErro("Email inválido.");
+    if (mensagem.trim().length < 10) return setErro("Conta-me um pouco mais (mínimo 10 caracteres).");
+
+    setErro(null);
+    setLinkEmail(construirLinkEmail());
+
+    // Sem endpoint configurado: segue logo pelo email do visitante
+    if (!dadosPessoais.endpointFormulario) {
+      setEstado("plano-b");
+      window.location.href = linkEmail;
+      return;
+    }
+
+    setEstado("a-enviar");
+
+    try {
+      const resposta = await fetch(dadosPessoais.endpointFormulario, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          nome: nome.trim(),
+          email: email.trim(),
+          tipo_projeto: tipo,
+          mensagem: mensagem.trim(),
+          _subject: `Pedido de orçamento — ${tipo}`,
+          _template: "table",
+          _captcha: "false",
+        }),
+      });
+
+      const json: unknown = await resposta.json().catch(() => null);
+      const falhou =
+        !resposta.ok ||
+        (typeof json === "object" &&
+          json !== null &&
+          "success" in json &&
+          String((json as { success?: unknown }).success) === "false");
+
+      if (!falhou) {
+        setEstado("enviado");
+        return;
+      }
+
+      const detalhe =
+        typeof json === "object" && json !== null && "message" in json
+          ? String((json as { message?: unknown }).message)
+          : "";
+      setNota(detalhe || "O serviço de envio não respondeu como esperado.");
+      setEstado("plano-b");
+    } catch {
+      setNota("Sem ligação ao serviço de envio.");
+      setEstado("plano-b");
+    }
   };
 
   const copiar = async () => {
@@ -117,7 +167,7 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
         className="absolute inset-0 cursor-default bg-ink-950/80 backdrop-blur-sm"
       />
 
-      <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-3xl border border-white/12 bg-ink-850 p-6 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)] sm:p-8">
+      <div className="relative max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-3xl border border-white/12 bg-ink-850 p-6 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.9)] sm:p-8">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-petal-lilac/20 blur-3xl"
@@ -132,19 +182,41 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
           <X className="h-4 w-4" />
         </button>
 
-        {enviado ? (
-          /* ── Confirmação ── */
+        {estado === "enviado" && (
+          /* ── Enviado com sucesso ── */
           <div className="relative text-center">
             <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-petal-mint/15">
               <Check className="h-6 w-6 text-petal-mint" />
             </span>
             <h2 id="titulo-orcamento" className="mt-4 font-display text-xl font-bold text-white">
-              Pedido pronto a enviar
+              Mensagem enviada!
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              Abrimos a tua app de email com a mensagem já escrita. Só tens de carregar em
-              <strong className="text-slate-200"> Enviar</strong>. Não abriu? Usa o link abaixo ou
-              escreve para {dadosPessoais.email}.
+              Recebi o teu pedido. Respondo a <strong className="text-slate-200">{email}</strong> em
+              24–48h.
+            </p>
+            <button
+              type="button"
+              onClick={fechar}
+              className="mt-6 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-petal-rose via-petal-lilac to-petal-sky px-6 py-3 text-sm font-semibold text-ink-950 transition hover:brightness-110"
+            >
+              Fechar
+            </button>
+          </div>
+        )}
+
+        {estado === "plano-b" && (
+          /* ── Serviço de envio falhou: email direto ── */
+          <div className="relative text-center">
+            <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-petal-amber/15">
+              <AlertTriangle className="h-6 w-6 text-petal-amber" />
+            </span>
+            <h2 id="titulo-orcamento" className="mt-4 font-display text-xl font-bold text-white">
+              Não deu para enviar daqui
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">
+              A mensagem não saiu. Envia-a pelo teu email — está tudo preenchido, só tens de
+              carregar em Enviar. {nota && <span className="text-slate-500">({nota})</span>}
             </p>
 
             <div className="mt-6 flex flex-col gap-2.5">
@@ -153,7 +225,7 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-petal-rose via-petal-lilac to-petal-sky px-6 py-3 text-sm font-semibold text-ink-950 transition hover:brightness-110"
               >
                 <Mail className="h-4 w-4" />
-                Abrir email outra vez
+                Abrir no meu email
               </a>
               <button
                 type="button"
@@ -161,26 +233,26 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm text-slate-200 transition hover:bg-white/10"
               >
                 <Copy className="h-4 w-4" />
-                {copiado ? "Email copiado!" : "Copiar o meu email"}
+                {copiado ? "Email copiado!" : `Copiar ${dadosPessoais.email}`}
               </button>
               <button
                 type="button"
-                onClick={fechar}
+                onClick={() => setEstado("formulario")}
                 className="mt-1 text-xs text-slate-500 transition hover:text-white"
               >
-                Fechar
+                Voltar ao formulário
               </button>
             </div>
           </div>
-        ) : (
+        )}
+
+        {(estado === "formulario" || estado === "a-enviar") && (
           /* ── Formulário ── */
           <form onSubmit={submeter} className="relative">
             <h2 id="titulo-orcamento" className="font-display text-xl font-bold text-white">
               Pedir orçamento
             </h2>
-            <p className="mt-1.5 text-[13px] text-slate-400">
-              Resposta em 24–48h. Sem compromisso.
-            </p>
+            <p className="mt-1.5 text-[13px] text-slate-400">Resposta em 24–48h. Sem compromisso.</p>
 
             <div className="mt-5 space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
@@ -255,13 +327,14 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
 
             <button
               type="submit"
-              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-petal-rose via-petal-lilac to-petal-sky px-6 py-3 text-sm font-semibold text-ink-950 transition hover:brightness-110"
+              disabled={estado === "a-enviar"}
+              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-petal-rose via-petal-lilac to-petal-sky px-6 py-3 text-sm font-semibold text-ink-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
             >
               <Send className="h-4 w-4" />
-              Enviar pedido
+              {estado === "a-enviar" ? "A enviar…" : "Enviar pedido"}
             </button>
             <p className="mt-3 text-center text-[11px] text-slate-600">
-              Vai abrir a tua app de email com tudo preenchido.
+              Só uso os teus dados para responder a este pedido.
             </p>
           </form>
         )}

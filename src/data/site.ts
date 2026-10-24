@@ -66,6 +66,12 @@ export const dadosPessoais = {
   autora: "Micaela Calé",
   papel: "Desenvolvedora de Software",
   email: "calemicaela94@gmail.com",
+  /**
+   * Endpoint que recebe os pedidos de orçamento e os entrega por email
+   * (FormSubmit — grátis, sem conta; a primeira submissão exige ativação por email).
+   * Deixar vazio ("") para voltar ao modo `mailto:` simples.
+   */
+  endpointFormulario: "https://formsubmit.co/ajax/calemicaela94@gmail.com",
   localizacao: "Portugal · remoto",
   anoAtual: new Date().getFullYear(),
 };
