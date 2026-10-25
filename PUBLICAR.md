@@ -1,69 +1,74 @@
-# Link público do portefólio — agora é fixo
+# Link público do portefólio
 
-## O link (já não muda, já não morre)
+## O link (abre direto o portefólio, sem página nenhuma antes)
+
+```
+https://calemicaela94-glitch.github.io/portfolio-camilly-suite/
+```
+
+Servido pelo **GitHub Pages**, que está activo neste repositório. Verificado:
+HTTP 200, o `<title>` é o do portefólio e os ficheiros (JS/CSS) carregam.
+
+**Espelho de segurança** (CDN, caso o GitHub esteja lento):
 
 ```
 https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html
 ```
 
-Este link abre o portefólio a qualquer pessoa, em qualquer lado, **sem precisar
-deste computador ligado**. Podes pôr no LinkedIn, no CV, no email.
+## Histórico: porque é que os links antigos morriam ou mostravam páginas à frente
 
-## Porque é que o link antigo morria
+| Link                                 | O que era                              | Porque falhava                                     |
+| ------------------------------------ | -------------------------------------- | -------------------------------------------------- |
+| `*.trycloudflare.com`                | túnel temporário do Cloudflare         | morria a cada reinício e mudava de endereço        |
+| `cdn.jsdelivr.net/...`               | CDN a servir HTML do GitHub            | devolve `text/plain` → mostra código em vez do site |
+| `raw.githack.com`                    | CDN a servir HTML do GitHub            | funciona, mas é um domínio técnico pouco fidedigno |
 
-O link anterior era um **túnel temporário** do Cloudflare
-(`https://algo-aleatorio.trycloudflare.com`). Túneis destes:
+O **GitHub Pages** é o sítio "oficial" do GitHub para sites: serve o ficheiro
+como página web normal, na raiz do caminho, sem intermediários.
 
-- mudam de endereço **a cada arranque** (nunca é o mesmo link duas vezes);
-- **morrem** quando o computador desliga, o processo para ou o container
-  reinicia.
+## Como está montado
 
-Ou seja: o link não estava "estragado" — tinha simplesmente deixado de existir.
-Não havia como o manter.
+- O branch **`gh-pages`** contém o build (`index.html`, `assets/`, `.nojekyll`).
+- O Pages está configurado em modo **"Deploy from a branch"** → `gh-pages` / raiz.
+- O **`main`** guarda o código-fonte **e** também `dist/` (para o espelho no CDN).
+- O `vite.config.ts` usa `base: "./"`, por isso os assets resolvem tanto em
+  `/portfolio-camilly-suite/` como na raiz de um domínio próprio.
 
-## Como funciona o link novo
-
-1. `npm run build` compila o site para a pasta `dist/`.
-2. A pasta `dist/` está **versionada no GitHub** (foi tirada do `.gitignore` de
-   propósito).
-3. O CDN **raw.githack** serve esses ficheiros diretamente do repositório.
-
-Assim o site fica alojado no GitHub (grátis, permanente) e o CDN trata de o
-entregar ao browser. O `vite.config.ts` usa `base: "./"` para os assets
-(`./assets/...`) funcionarem em qualquer caminho — era isto que fazia a página
-ficar em branco noutros alojamentos.
-
-## Publicar alterações novas
+## Publicar alterações
 
 ```bash
 ./scripts/publicar.sh
 ```
 
-Faz tudo: compila, guarda o build no GitHub (commit + push) e confirma que o
-link responde. O CDN guarda em cache ~1 minuto; se ainda não vires a versão
-nova, refresca daí a pouco (Ctrl+Shift+R).
+Compila, guarda no `main`, espelha no `gh-pages` e confirma que o link responde.
 
-## Prévia dentro do VS Code (para trabalhar)
+## Domínio próprio (bonito, tipo `micaelacale.pt`)
+
+### O que é grátis e o que não é
+
+- **`.pt` (Amen.pt ou outro registador): NÃO é grátis.** O Amen.pt é uma loja de
+  registo; um `.pt` custa cerca de 15–20 € por ano. Não existe forma legítima de
+  obter um `.pt` a zero.
+- **`is-a.dev`: grátis.** Subdomínios para programadores, aprovados por Pull
+  Request no repositório público deles. Já foi pedido o
+  **`micaelacale.is-a.dev`** → PR [#58405](https://github.com/is-a-dev/register/pull/58405)
+  (apontado para `calemicaela94-glitch.github.io`). Quando for aprovado, diz-se
+  aqui como ligar.
+- **`.eu.org`: grátis**, mas a aprovação é manual e demora semanas.
+
+### Passos para ligar um domínio próprio ao GitHub Pages (quando houver)
+
+1. No DNS do domínio, criar `CNAME` → `calemicaela94-glitch.github.io`.
+2. No repositório → *Settings → Pages → Custom domain* → escrever o domínio.
+3. Marcar **Enforce HTTPS** (o certificado é emitido automaticamente).
+4. No `vite.config.ts` **não é preciso mexer**: a base `./` já serve na raiz.
+
+## Prévia local (para trabalhar)
 
 ```
 https://rog-vscode-micaela.tailc3809d.ts.net/absproxy/5173/
 ```
 
-Há um **guardião** a correr ([`scripts/guardiao-previa.sh`](scripts/guardiao-previa.sh))
-que verifica de 30 em 30 segundos se o servidor está vivo e volta a arrancá-lo
-se ele cair. Arranca sozinho ao abrir um terminal (bloco no `~/.bashrc`).
-
-Parar o guardião: `kill "$(cat /tmp/portfolio-guardiao.pid)"`
-
-## Alternativas de link próprio (quando quiseres um domínio bonito)
-
-O link do raw.githack é permanente mas feio. Quando quiseres
-`portfolio-camilly.vercel.app` ou `micaelacale.com`:
-
-- **Vercel** — vercel.com → *Add New Project* → escolher este repositório →
-  Deploy (deteta Vite sozinho). Cada `git push` publica.
-- **Netlify** — igual, build `npm run build`, publish `dist`.
-- **GitHub Pages** — continua bloqueado por faturação na conta
-  (`The job was not started because your account is locked due to a billing issue`).
-  Se regularizares a faturação, o workflow `.github/workflows/deploy-pages.yml`
-  volta a publicar em `https://calemicaela94-glitch.github.io/portfolio-camilly-suite/`.
+Guardião: [`scripts/guardiao-previa.sh`](scripts/guardiao-previa.sh) — verifica a
+cada 30 s se o servidor caiu e volta a arrancá-lo. Arranca sozinho ao abrir um
+terminal. Parar: `kill "$(cat /tmp/portfolio-guardiao.pid)"`

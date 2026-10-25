@@ -5,20 +5,24 @@ Tema escuro elegante, acentos em tons de pétala (rosa, lilás, verde-menta, âm
 
 ---
 
-## Link público (fixo e permanente)
+## Link público (fixo, abre direto no site)
 
 ```
-https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html
+https://calemicaela94-glitch.github.io/portfolio-camilly-suite/
 ```
 
-Não depende deste computador estar ligado (o antigo túnel Cloudflare morria a
-cada reinício — ver [`PUBLICAR.md`](PUBLICAR.md)).
+Servido pelo **GitHub Pages** (branch `gh-pages`), sem página intermédia e sem
+depender deste computador. Espelho/CDN:
+`https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html`
 
 Publicar alterações:
 
 ```bash
-./scripts/publicar.sh   # compila, guarda no GitHub e confirma o link
+./scripts/publicar.sh   # compila, guarda no main, espelha no gh-pages e confirma o link
 ```
+
+Domínio próprio: ver [`PUBLICAR.md`](PUBLICAR.md) (o `.pt` é pago no Amen.pt;
+`is-a.dev` é grátis e já está pedido).
 
 ## Como ver o site a trabalhar (prévia local)
 
