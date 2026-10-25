@@ -20,6 +20,35 @@ https://calemicaela94-glitch.github.io/portfolio-camilly-suite/
 https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html
 ```
 
+## Vercel (link `*.vercel.app`)
+
+O site já está publicado na Vercel, mas em modo **temporário** (sem conta ligada):
+
+```
+https://fleet-savanna-ib9imaz.tmp.now   ← expira 60 minutos depois de ser criado
+```
+
+Para ficar **permanente** é preciso "reclamar" o deploy (30 segundos, com o login
+do GitHub):
+
+```
+https://vercel.com/claim-deployment?code=ee857bac-0131-4113-bfa7-518215a4fd0b
+```
+
+Depois de reclamado, o site passa a viver num endereço fixo tipo
+`https://portfolio-camilly-suite.vercel.app` e cada `git push` publica sozinho.
+
+Para publicar por linha de comando (sem painel), criar um token em
+<https://vercel.com/account/tokens> e guardá-lo uma vez:
+
+```bash
+echo 'o-teu-token' > /config/.vercel-token && chmod 600 /config/.vercel-token
+./scripts/publicar-vercel.sh
+```
+
+Ficheiros já preparados: [`vercel.json`](vercel.json) (framework Vite, output
+`dist`) e [`scripts/publicar-vercel.sh`](scripts/publicar-vercel.sh).
+
 ## Histórico: porque é que os links antigos morriam ou mostravam páginas à frente
 
 | Link                                 | O que era                              | Porque falhava                                     |
