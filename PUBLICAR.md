@@ -1,55 +1,69 @@
-# Como dar um link público ao portefólio
+# Link público do portefólio — agora é fixo
 
-## Atalho (o que está a ser usado agora)
+## O link (já não muda, já não morre)
+
+```
+https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html
+```
+
+Este link abre o portefólio a qualquer pessoa, em qualquer lado, **sem precisar
+deste computador ligado**. Podes pôr no LinkedIn, no CV, no email.
+
+## Porque é que o link antigo morria
+
+O link anterior era um **túnel temporário** do Cloudflare
+(`https://algo-aleatorio.trycloudflare.com`). Túneis destes:
+
+- mudam de endereço **a cada arranque** (nunca é o mesmo link duas vezes);
+- **morrem** quando o computador desliga, o processo para ou o container
+  reinicia.
+
+Ou seja: o link não estava "estragado" — tinha simplesmente deixado de existir.
+Não havia como o manter.
+
+## Como funciona o link novo
+
+1. `npm run build` compila o site para a pasta `dist/`.
+2. A pasta `dist/` está **versionada no GitHub** (foi tirada do `.gitignore` de
+   propósito).
+3. O CDN **raw.githack** serve esses ficheiros diretamente do repositório.
+
+Assim o site fica alojado no GitHub (grátis, permanente) e o CDN trata de o
+entregar ao browser. O `vite.config.ts` usa `base: "./"` para os assets
+(`./assets/...`) funcionarem em qualquer caminho — era isto que fazia a página
+ficar em branco noutros alojamentos.
+
+## Publicar alterações novas
 
 ```bash
 ./scripts/publicar.sh
 ```
 
-Compila o site, arranca o servidor estático na porta 4173 e abre um túnel
-Cloudflare. No fim imprime um link do tipo:
+Faz tudo: compila, guarda o build no GitHub (commit + push) e confirma que o
+link responde. O CDN guarda em cache ~1 minuto; se ainda não vires a versão
+nova, refresca daí a pouco (Ctrl+Shift+R).
+
+## Prévia dentro do VS Code (para trabalhar)
 
 ```
-https://alguma-coisa-aleatoria.trycloudflare.com
+https://rog-vscode-micaela.tailc3809d.ts.net/absproxy/5173/
 ```
 
-Esse link é **público** — qualquer pessoa, em qualquer lado, abre o portefólio.
-Mas é **temporário**: morre quando o computador desliga ou o processo para
-(cada arranque dá um endereço novo). Serve para mostrar a alguém já.
+Há um **guardião** a correr ([`scripts/guardiao-previa.sh`](scripts/guardiao-previa.sh))
+que verifica de 30 em 30 segundos se o servidor está vivo e volta a arrancá-lo
+se ele cair. Arranca sozinho ao abrir um terminal (bloco no `~/.bashrc`).
 
-Para parar: `pkill -f "cloudflared tunnel --url http://127.0.0.1:4173"`.
+Parar o guardião: `kill "$(cat /tmp/portfolio-guardiao.pid)"`
 
----
+## Alternativas de link próprio (quando quiseres um domínio bonito)
 
-## Link fixo e permanente (recomendado a seguir)
+O link do raw.githack é permanente mas feio. Quando quiseres
+`portfolio-camilly.vercel.app` ou `micaelacale.com`:
 
-O GitHub Pages está bloqueado nesta conta (`The job was not started because your
-account is locked due to a billing issue`) e por isso o Actions não corre e o
-Pages não publica. Duas saídas gratuitas:
-
-### Opção A — Vercel (5 minutos, link tipo `portfolio-camilly.vercel.app`)
-1. Entrar em [vercel.com](https://vercel.com) com a conta GitHub `calemicaela94-glitch`.
-2. *Add New… → Project* → escolher `portfolio-camilly-suite` → **Deploy**.
-3. Deteta Vite sozinho (`npm run build`, pasta `dist`). A partir daí, cada
-   `git push` publica automaticamente.
-
-### Opção B — Netlify (igual, link tipo `portfolio-camilly.netlify.app`)
-1. [app.netlify.com](https://app.netlify.com) → *Add new site → Import an existing project*.
-2. Escolher o repo → Build command `npm run build`, Publish directory `dist`.
-
-Ambas são gratuitas e não pedem cartão. Assim que estiver criado, o link é fixo
-e atualiza sozinho a cada alteração.
-
-### Opção C — resolver a faturação do GitHub
-Se o bloqueio da conta GitHub for regularizado (Settings → Billing), o
-`.github/workflows/deploy-pages.yml` volta a funcionar e publica em
-`https://calemicaela94-glitch.github.io/portfolio-camilly-suite/`.
-
----
-
-## Notas técnicas
-
-- `npm run build` gera `dist/` (ficheiros estáticos, sem backend).
-- `VITE_BASE=/` para domínio próprio/túnel; `VITE_BASE=/portfolio-camilly-suite/`
-  só se for para GitHub Pages de projeto.
-- A prévia dentro do VS Code continua em `/absproxy/5173/` (`npm run dev:preview`).
+- **Vercel** — vercel.com → *Add New Project* → escolher este repositório →
+  Deploy (deteta Vite sozinho). Cada `git push` publica.
+- **Netlify** — igual, build `npm run build`, publish `dist`.
+- **GitHub Pages** — continua bloqueado por faturação na conta
+  (`The job was not started because your account is locked due to a billing issue`).
+  Se regularizares a faturação, o workflow `.github/workflows/deploy-pages.yml`
+  volta a publicar em `https://calemicaela94-glitch.github.io/portfolio-camilly-suite/`.

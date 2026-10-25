@@ -5,7 +5,22 @@ Tema escuro elegante, acentos em tons de pétala (rosa, lilás, verde-menta, âm
 
 ---
 
-## Como ver o site
+## Link público (fixo e permanente)
+
+```
+https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html
+```
+
+Não depende deste computador estar ligado (o antigo túnel Cloudflare morria a
+cada reinício — ver [`PUBLICAR.md`](PUBLICAR.md)).
+
+Publicar alterações:
+
+```bash
+./scripts/publicar.sh   # compila, guarda no GitHub e confirma o link
+```
+
+## Como ver o site a trabalhar (prévia local)
 
 ```bash
 npm install          # só a primeira vez
@@ -20,7 +35,14 @@ npm run dev:preview  # porta 5173 + base /absproxy/5173/
 
 Link da prévia: `https://rog-vscode-micaela.tailc3809d.ts.net/absproxy/5173/`
 
-Build de produção: `npm run build` (gera `dist/`).
+Se a prévia cair, o guardião volta a arrancá-la sozinho:
+
+```bash
+nohup ./scripts/guardiao-previa.sh >/tmp/portfolio-guardiao.log 2>&1 &
+```
+
+Build de produção: `npm run build` (gera `dist/`, que está versionado no git de
+propósito — é o que alimenta o link público).
 
 ---
 
