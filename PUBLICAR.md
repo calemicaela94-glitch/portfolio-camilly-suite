@@ -2,12 +2,17 @@
 
 ## O link (abre direto o portefólio, sem página nenhuma antes)
 
+👉 **https://calemicaela94-glitch.github.io/**
+
+Este é **o link principal**: é o *site de utilizador* do GitHub Pages, servido na
+raiz do domínio, sem caminho nenhum atrás e sem intermediários. Verificado:
+HTTP 200 e o `<title>` é o do portefólio.
+
+Link alternativo (mesmo conteúdo, dentro do caminho do projecto):
+
 ```
 https://calemicaela94-glitch.github.io/portfolio-camilly-suite/
 ```
-
-Servido pelo **GitHub Pages**, que está activo neste repositório. Verificado:
-HTTP 200, o `<title>` é o do portefólio e os ficheiros (JS/CSS) carregam.
 
 **Espelho de segurança** (CDN, caso o GitHub esteja lento):
 
@@ -28,8 +33,12 @@ como página web normal, na raiz do caminho, sem intermediários.
 
 ## Como está montado
 
-- O branch **`gh-pages`** contém o build (`index.html`, `assets/`, `.nojekyll`).
-- O Pages está configurado em modo **"Deploy from a branch"** → `gh-pages` / raiz.
+- **Repositório `calemicaela94-glitch.github.io`** (o "site de utilizador") —
+  recebe o build na raiz e é servido em `https://calemicaela94-glitch.github.io/`.
+- **Branch `gh-pages`** deste projecto — recebe o mesmo build e serve em
+  `https://calemicaela94-glitch.github.io/portfolio-camilly-suite/`.
+- O Pages está em modo **"Deploy from a branch"** (não usa Actions, por isso o
+  bloqueio de faturação da conta não o afecta).
 - O **`main`** guarda o código-fonte **e** também `dist/` (para o espelho no CDN).
 - O `vite.config.ts` usa `base: "./"`, por isso os assets resolvem tanto em
   `/portfolio-camilly-suite/` como na raiz de um domínio próprio.

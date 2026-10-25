@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# Publica o portefólio num link público PERMANENTE.
+# Publica o portefólio nos links públicos PERMANENTES.
 #
-# Faz três coisas:
+# Faz quatro coisas:
 #  1. compila o site para `dist/` (com caminhos relativos `./`);
-#  2. guarda `dist/` no branch `main` do GitHub;
-#  3. copia o mesmo build para o branch `gh-pages`, que é o que o
-#     GitHub Pages serve em https://calemicaela94-glitch.github.io/portfolio-camilly-suite/
+#  2. guarda `dist/` no branch `main` do GitHub (espelho no CDN);
+#  3. copia o mesmo build para o branch `gh-pages` do projecto;
+#  4. copia o mesmo build para o repositório do SITE PRINCIPAL
+#     (calemicaela94-glitch.github.io), que serve na raiz do domínio.
 #
 # Nada disto depende deste computador estar ligado.
 #
@@ -16,8 +17,10 @@ PROJETO="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$PROJETO"
 
 REPO="calemicaela94-glitch/portfolio-camilly-suite"
+SITE_PRINCIPAL="calemicaela94-glitch/calemicaela94-glitch.github.io"
 BRANCH="$(git branch --show-current)"
-LINK="https://calemicaela94-glitch.github.io/portfolio-camilly-suite/"
+LINK="https://calemicaela94-glitch.github.io/"
+LINK_PROJETO="https://calemicaela94-glitch.github.io/portfolio-camilly-suite/"
 ESPELHO="https://raw.githack.com/$REPO/$BRANCH/dist/index.html"
 
 echo "→ A compilar o site (base relativa ./)…"
@@ -59,9 +62,33 @@ touch "$TMPW/.nojekyll"
 cleanup
 trap - EXIT
 
+echo "→ A actualizar o site principal (${SITE_PRINCIPAL})…"
+SITE_TMP="$(mktemp -d)"
+cleanup_site() { rm -rf "$SITE_TMP"; }
+trap cleanup_site EXIT
+
+git clone -q --depth 1 "https://github.com/${SITE_PRINCIPAL}.git" "$SITE_TMP"
+find "$SITE_TMP" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+cp -a dist/. "$SITE_TMP"/
+touch "$SITE_TMP/.nojekyll"
+(
+  cd "$SITE_TMP"
+  git add -A
+  if git diff --cached --quiet; then
+    echo "  (site principal já estava actualizado)"
+  else
+    git commit -q -m "Publish portfolio build ($(date '+%Y-%m-%d %H:%M'))"
+    git push -q origin main
+    echo "  site principal actualizado ✅"
+  fi
+)
+cleanup_site
+trap - EXIT
+
 echo
-echo "Link público fixo:      $LINK"
-echo "Espelho (CDN, backup): $ESPELHO"
+echo "Link público principal:  $LINK"
+echo "Link alternativo:        $LINK_PROJETO"
+echo "Espelho (CDN, backup):   $ESPELHO"
 printf "→ A confirmar o link… "
 CODE="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$LINK" || true)"
 if [ "$CODE" = "200" ]; then
