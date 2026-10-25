@@ -93,14 +93,17 @@ Ganho: filtra curiosos, atrai clientes sérios, e reduz conversas de 20 mensagen
 
 ## Fase 5 — Contacto à prova de falha ⏱️ ~40 min
 
-- [ ] Testar o FormSubmit a sério com o `curl` (ver se responde 200 e se o e-mail chega).
-- [ ] Se falhar: fallback automático — abre o `mailto:` já preenchido e mostra uma mensagem
-      clara ("o envio automático falhou, este botão abre o teu e-mail com tudo escrito").
-      Assim nunca se perde um cliente em silêncio.
-- [ ] Nunca mostrar o erro técnico "O serviço de envio não respondeu" ao visitante.
-- [ ] E-mail: quando o domínio existir, trocar `calemicaela94@gmail.com` por `ola@camilly.pt`
-      (1 linha em [`site.ts`](src/data/site.ts:68) + endpoint novo). Até lá, o Gmail fica mas
-      com botão "copiar e-mail" em vez de texto solto.
+- [x] **E-mail trocado a 25/10/2026:** `camillyhelp@outlook.pt` em
+      [`site.ts`](src/data/site.ts:68) (contacto + endpoint do FormSubmit). Os componentes todos
+      leem daí, por isso mudou-se num sítio só.
+- [x] Endpoint testado com `curl`: respondeu `This form needs Activation` — ou seja, está vivo
+      e o e-mail de ativação foi enviado.
+- [ ] ⚠️ **Clicar no link "Activate Form"** desse e-mail (ver spam/lixo do Outlook).
+      Enquanto não for ativado, os pedidos de orçamento NÃO chegam.
+- [ ] Depois de ativado, enviar um pedido de teste pelo site e confirmar que chega à caixa.
+- [ ] Fallback: já existe (abre o `mailto:` preenchido). Falta só trocar o texto técnico
+      "O serviço de envio não respondeu como esperado" por uma frase para humanos.
+- [ ] Quando o domínio `camilly.pt` existir, trocar por `ola@camilly.pt` (1 linha + ativação nova).
 
 ---
 

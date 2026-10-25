@@ -109,7 +109,7 @@ com Nome, Email, Tipo de projeto e Mensagem.
 
 - Envia por `POST` para `dadosPessoais.endpointFormulario` em
   [`src/data/site.ts`](src/data/site.ts) — **FormSubmit**, que entrega o pedido
-  por email em `calemicaela94@gmail.com`. Grátis, sem conta.
+  por email em `camillyhelp@outlook.pt`. Grátis, sem conta.
 - A primeira submissão obriga a **ativar o formulário** através do link que o
   FormSubmit envia para esse email (só uma vez).
 - Se o serviço falhar, o modal mostra o plano B: abrir no email do visitante com

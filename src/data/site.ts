@@ -65,13 +65,20 @@ export const dadosPessoais = {
   nome: "Camilly",
   autora: "Micaela Calé",
   papel: "Software Developer",
-  email: "calemicaela94@gmail.com",
+  email: "camillyhelp@outlook.pt",
   /**
    * Endpoint que recebe os pedidos de orçamento e os entrega por email
    * (FormSubmit — grátis, sem conta; a primeira submissão exige ativação por email).
    * Deixar vazio ("") para voltar ao modo `mailto:` simples.
+   *
+   * ⚠️ Ao mudar este endereço é obrigatório ativar de novo o formulário:
+   * o FormSubmit envia um email de confirmação para a caixa nova e, até se
+   * clicar no link, os pedidos NÃO chegam. Testar com:
+   *   curl -X POST https://formsubmit.co/ajax/<email> \
+   *     -H "Content-Type: application/json" \
+   *     -d '{"nome":"teste","mensagem":"teste de ativação"}'
    */
-  endpointFormulario: "https://formsubmit.co/ajax/calemicaela94@gmail.com",
+  endpointFormulario: "https://formsubmit.co/ajax/camillyhelp@outlook.pt",
   localizacao: "Portugal · remoto",
   anoAtual: new Date().getFullYear(),
 };
