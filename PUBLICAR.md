@@ -20,16 +20,24 @@ https://calemicaela94-glitch.github.io/portfolio-camilly-suite/
 https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html
 ```
 
-## Vercel (link `*.vercel.app`) — activo
+## Vercel (link `*.vercel.app`) — activo e com contador de visitas
 
 👉 **https://portfolio-camilly-suite.vercel.app/**
 
-O deploy foi reclamado e está em produção na conta Vercel da Micaela.
 Verificado: HTTP 200, HTML do portefólio, JS e CSS a 200, HTTPS com HSTS.
 
-Para que cada `git push` publique sozinho na Vercel, basta uma vez no painel:
-*Project → Settings → Git → Connect Git Repository* → escolher
-`calemicaela94-glitch/portfolio-camilly-suite`.
+**Publicação automática por Git: activa e testada.** Fiz um `git push` com uma
+marca invisível e ela apareceu no site ~90 s depois; removi a marca e voltou a
+desaparecer. Ou seja: **qualquer `git push` para `main` publica na Vercel sozinho.**
+
+**Contador de visitas (Vercel Web Analytics):** activo. O componente está em
+[`src/main.tsx`](src/main.tsx) e em produção o script responde em
+`/_vercel/insights/script.js` (HTTP 200). As estatísticas vêem-se no painel da
+Vercel em *Project → Analytics*.
+
+> ⚠️ O import é `@vercel/analytics/react` (este projecto é Vite + React). O
+> `@vercel/analytics/next` **não funciona aqui** — testei e rebenta o build,
+> porque esse é só para Next.js.
 
 Para publicar por linha de comando (sem painel), criar um token em
 <https://vercel.com/account/tokens> e guardá-lo uma vez:
