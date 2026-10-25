@@ -2,10 +2,14 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // `base`:
-//  - dev/preview local: "/" ou o proxy do code-server (--base=/absproxy/5173/)
-//  - GitHub Pages (link público): "/portfolio-camilly-suite/" (ver .github/workflows/deploy-pages.yml)
+//  - prévia local: o proxy do code-server (--base=/absproxy/5173/)
+//  - link público servido por qualquer sítio (CDN jsDelivr/raw.githack, Vercel,
+//    Netlify, domínio próprio, túnel): relativo "./" — assim os assets
+//    (`./assets/...`) resolvem tanto na raiz como dentro de subpastas, e o
+//    link nunca fica em branco por causa do caminho.
+//  - GitHub Pages de projeto: "/portfolio-camilly-suite/" (VITE_BASE explícito)
 export default defineConfig({
-  base: process.env.VITE_BASE ?? "/",
+  base: process.env.VITE_BASE ?? "./",
   plugins: [react()],
   server: {
     host: true,

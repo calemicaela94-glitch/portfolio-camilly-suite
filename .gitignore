@@ -1,6 +1,7 @@
 node_modules
-dist
-dist-ssr
+# `dist/` fica versionado DE PROPÓSITO: é o que dá o link público
+# permanente (CDN a servir os ficheiros do GitHub, sem depender deste
+# computador). Não voltes a pôr `dist` aqui.
 *.local
 .env
 .env.*
