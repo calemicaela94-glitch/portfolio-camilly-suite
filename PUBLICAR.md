@@ -50,6 +50,25 @@ echo 'o-teu-token' > /config/.vercel-token && chmod 600 /config/.vercel-token
 Ficheiros já preparados: [`vercel.json`](vercel.json) (framework Vite, output
 `dist`) e [`scripts/publicar-vercel.sh`](scripts/publicar-vercel.sh).
 
+## Analíticas: onde ver o quê
+
+| Sítio                              | Tem estatísticas de visitas? | Onde                              |
+| ---------------------------------- | ---------------------------- | --------------------------------- |
+| **Vercel** (`*.vercel.app`)        | **Sim** (Web Analytics)      | painel Vercel → *Project → Analytics* |
+| **GitHub Pages** (`github.io`)     | **Não existe**                | —                                 |
+| **GitHub** (o repositório)         | Só tráfego do repo, **não do site** | repo → *Insights → Traffic* |
+
+O GitHub **não** conta visitas ao site publicado — o *Traffic* do repositório
+conta quem abre a página do código no GitHub, que é outra coisa (e é 0 agora).
+A API também não tem analytics de Pages (responde 404).
+
+Por isso: **se quiseres números reais de visitas, usa o link da Vercel como link
+oficial.** É o único dos três que mede.
+
+Se quiseres medir também no GitHub Pages, é preciso um serviço externo grátis
+(sem cookies, amigo do RGPD): **GoatCounter** ou **Cloudflare Web Analytics**.
+Ambos exigem criar uma conta gratuita e depois eu coloco o script no site.
+
 ## Histórico: porque é que os links antigos morriam ou mostravam páginas à frente
 
 | Link                                 | O que era                              | Porque falhava                                     |
