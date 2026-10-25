@@ -7,13 +7,15 @@ Tema escuro elegante, acentos em tons de pétala (rosa, lilás, verde-menta, âm
 
 ## Link público (fixo, abre direto no site)
 
-👉 **https://calemicaela94-glitch.github.io/**
+👉 **https://portfolio-camilly-suite.vercel.app/** (Vercel, HTTPS)
 
-Servido pelo **GitHub Pages** (site de utilizador, na raiz do domínio), sem
-página intermédia e sem depender deste computador.
+Também disponível em **https://calemicaela94-glitch.github.io/** (GitHub Pages,
+na raiz do domínio) e em
+`https://calemicaela94-glitch.github.io/portfolio-camilly-suite/`.
 
-Alternativo: `https://calemicaela94-glitch.github.io/portfolio-camilly-suite/`
 Espelho/CDN: `https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html`
+
+Nenhum destes depende deste computador estar ligado.
 
 Publicar alterações:
 

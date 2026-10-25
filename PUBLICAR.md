@@ -20,23 +20,16 @@ https://calemicaela94-glitch.github.io/portfolio-camilly-suite/
 https://raw.githack.com/calemicaela94-glitch/portfolio-camilly-suite/main/dist/index.html
 ```
 
-## Vercel (link `*.vercel.app`)
+## Vercel (link `*.vercel.app`) — activo
 
-O site já está publicado na Vercel, mas em modo **temporário** (sem conta ligada):
+👉 **https://portfolio-camilly-suite.vercel.app/**
 
-```
-https://fleet-savanna-ib9imaz.tmp.now   ← expira 60 minutos depois de ser criado
-```
+O deploy foi reclamado e está em produção na conta Vercel da Micaela.
+Verificado: HTTP 200, HTML do portefólio, JS e CSS a 200, HTTPS com HSTS.
 
-Para ficar **permanente** é preciso "reclamar" o deploy (30 segundos, com o login
-do GitHub):
-
-```
-https://vercel.com/claim-deployment?code=ee857bac-0131-4113-bfa7-518215a4fd0b
-```
-
-Depois de reclamado, o site passa a viver num endereço fixo tipo
-`https://portfolio-camilly-suite.vercel.app` e cada `git push` publica sozinho.
+Para que cada `git push` publique sozinho na Vercel, basta uma vez no painel:
+*Project → Settings → Git → Connect Git Repository* → escolher
+`calemicaela94-glitch/portfolio-camilly-suite`.
 
 Para publicar por linha de comando (sem painel), criar um token em
 <https://vercel.com/account/tokens> e guardá-lo uma vez:
