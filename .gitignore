@@ -13,3 +13,6 @@ node_modules
 *.log
 dist/.git-backup-*
 .vercel
+
+# Cópias de segurança locais dos documentos
+documentos/*.bak*
