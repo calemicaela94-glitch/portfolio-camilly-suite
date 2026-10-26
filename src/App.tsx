@@ -7,27 +7,33 @@ import { SuiteSection } from "./components/SuiteSection";
 import { Services } from "./components/Services";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
+import { ProvedorIdioma } from "./i18n/idioma";
 
 /**
  * Página única do portefólio.
  * A ordem das secções define o percurso de leitura:
  * quem é → prova (app publicada) → visão (suite) → serviços → contacto.
+ *
+ * `ProvedorIdioma` envolve tudo: qualquer componente pode pedir os textos
+ * no idioma ativo com `useTextos()`.
  */
 export default function App() {
   return (
-    <OrcamentoProvider>
-      <div className="min-h-screen bg-ink-950">
-        <Navbar />
-        <main>
-          <Hero />
-          <FeaturedProject />
-          <OutrosProjetos />
-          <SuiteSection />
-          <Services />
-          <Contact />
-        </main>
-        <Footer />
-      </div>
-    </OrcamentoProvider>
+    <ProvedorIdioma>
+      <OrcamentoProvider>
+        <div className="min-h-screen bg-ink-950">
+          <Navbar />
+          <main>
+            <Hero />
+            <FeaturedProject />
+            <OutrosProjetos />
+            <SuiteSection />
+            <Services />
+            <Contact />
+          </main>
+          <Footer />
+        </div>
+      </OrcamentoProvider>
+    </ProvedorIdioma>
   );
 }

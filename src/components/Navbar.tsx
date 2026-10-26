@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { dadosPessoais, navegacao } from "../data/site";
+import { useTextos } from "../i18n/idioma";
 import { Button } from "./ui/Button";
+import { SeletorIdioma } from "./SeletorIdioma";
 import { useOrcamento } from "./orcamento/contexto";
 
-/** Cabeçalho fixo com navegação por âncoras e menu móvel. */
+/** Cabeçalho fixo com navegação por âncoras, seletor de idioma e menu móvel. */
 export function Navbar() {
   const { abrir } = useOrcamento();
+  const { dadosPessoais, navegacao, ui } = useTextos();
   const [aberto, setAberto] = useState(false);
   const [comFundo, setComFundo] = useState(false);
 
@@ -23,7 +25,7 @@ export function Navbar() {
         comFundo ? "border-b border-white/10 bg-ink-950/80 backdrop-blur-xl" : "bg-transparent"
       }`}
     >
-      <div className="container-page flex h-16 items-center justify-between sm:h-20">
+      <div className="container-page flex h-16 items-center justify-between gap-3 sm:h-20">
         {/* Marca */}
         <a href="#topo" className="group flex items-center gap-2.5">
           <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-petal-rose via-petal-lilac to-petal-sky font-display text-base font-bold text-ink-950">
@@ -36,7 +38,7 @@ export function Navbar() {
         </a>
 
         {/* Navegação desktop */}
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Navegação principal">
+        <nav className="hidden items-center gap-8 md:flex" aria-label={ui.navPrincipal}>
           {navegacao.map((item) => (
             <a key={item.href} href={item.href} className="text-sm text-slate-400 transition hover:text-white">
               {item.rotulo}
@@ -44,28 +46,32 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden md:block">
-          <Button variante="primario" onClick={abrir} className="px-5 py-2.5 text-sm">
-            Pedir orçamento
-          </Button>
-        </div>
+        <div className="flex items-center gap-2.5">
+          <SeletorIdioma />
 
-        {/* Botão do menu móvel */}
-        <button
-          type="button"
-          onClick={() => setAberto((v) => !v)}
-          aria-expanded={aberto}
-          aria-label={aberto ? "Fechar menu" : "Abrir menu"}
-          className="rounded-xl border border-white/15 p-2 text-slate-200 transition hover:bg-white/10 md:hidden"
-        >
-          {aberto ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+          <div className="hidden md:block">
+            <Button variante="primario" onClick={abrir} className="px-5 py-2.5 text-sm">
+              {ui.pedirOrcamento}
+            </Button>
+          </div>
+
+          {/* Botão do menu móvel */}
+          <button
+            type="button"
+            onClick={() => setAberto((v) => !v)}
+            aria-expanded={aberto}
+            aria-label={aberto ? ui.fecharMenu : ui.abrirMenu}
+            className="rounded-xl border border-white/15 p-2 text-slate-200 transition hover:bg-white/10 md:hidden"
+          >
+            {aberto ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Painel do menu móvel */}
       {aberto && (
         <div className="border-t border-white/10 bg-ink-950/95 px-5 pb-6 pt-4 backdrop-blur-xl md:hidden">
-          <nav className="flex flex-col gap-1" aria-label="Navegação móvel">
+          <nav className="flex flex-col gap-1" aria-label={ui.navMovel}>
             {navegacao.map((item) => (
               <a
                 key={item.href}
@@ -77,6 +83,9 @@ export function Navbar() {
               </a>
             ))}
           </nav>
+
+          <SeletorIdioma variante="largo" />
+
           <Button
             variante="primario"
             onClick={() => {
@@ -85,7 +94,7 @@ export function Navbar() {
             }}
             className="mt-4 w-full"
           >
-            Pedir orçamento
+            {ui.pedirOrcamento}
           </Button>
         </div>
       )}

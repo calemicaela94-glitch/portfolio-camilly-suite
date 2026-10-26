@@ -1,5 +1,5 @@
 import { Check } from "lucide-react";
-import { suite } from "../data/site";
+import { useTextos } from "../i18n/idioma";
 import { acento } from "../lib/cores";
 import { Badge } from "./ui/Badge";
 import { Section } from "./ui/Section";
@@ -9,6 +9,8 @@ import { Section } from "./ui/Section";
  * visão geral, pilares e os módulos que o compõem.
  */
 export function SuiteSection() {
+  const { suite } = useTextos();
+
   return (
     <Section id="suite" eyebrow={suite.eyebrow} titulo={suite.titulo} descricao={suite.descricao}>
       {/* Pilares do ecossistema */}
@@ -70,7 +72,7 @@ export function SuiteSection() {
               </ul>
 
               {/* O estado deixou de se repetir em cada cartão: é dito uma vez no
-                  cabeçalho da secção (ver `suite.descricao` em site.ts). */}
+                  cabeçalho da secção (ver `suite.descricao` em textos.ts). */}
             </article>
           );
         })}

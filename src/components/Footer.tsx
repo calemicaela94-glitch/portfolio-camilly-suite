@@ -1,7 +1,10 @@
-import { dadosPessoais, navegacao, rodape } from "../data/site";
+import { useTextos } from "../i18n/idioma";
+import { SeletorIdioma } from "./SeletorIdioma";
 
-/** Rodapé minimalista com marca, navegação e crédito da autora. */
+/** Rodapé minimalista com marca, navegação, idioma e crédito da autora. */
 export function Footer() {
+  const { dadosPessoais, navegacao, rodape, ui } = useTextos();
+
   return (
     <footer className="border-t border-white/10 bg-ink-950 py-10">
       <div className="container-page flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
@@ -14,7 +17,7 @@ export function Footer() {
           </span>
         </div>
 
-        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2" aria-label="Rodapé">
+        <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2" aria-label={ui.navRodape}>
           {navegacao.map((item) => (
             <a key={item.href} href={item.href} className="text-xs text-slate-500 transition hover:text-white">
               {item.rotulo}
@@ -24,8 +27,9 @@ export function Footer() {
             href={`mailto:${dadosPessoais.email}`}
             className="text-xs text-slate-500 transition hover:text-white"
           >
-            Email
+            {ui.email}
           </a>
+          <SeletorIdioma />
         </nav>
       </div>
 

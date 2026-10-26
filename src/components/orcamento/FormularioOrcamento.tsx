@@ -1,19 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertTriangle, Check, Copy, Mail, Send, X } from "lucide-react";
-import { dadosPessoais } from "../../data/site";
+import { useTextos } from "../../i18n/idioma";
 
 interface Props {
   aberto: boolean;
   fechar: () => void;
 }
-
-const TIPOS = [
-  "MVP / protótipo",
-  "App móvel (Android / iOS)",
-  "Web app + IA",
-  "Site / portefólio",
-  "Outro",
-];
 
 type Estado = "formulario" | "a-enviar" | "enviado" | "plano-b";
 
@@ -22,13 +14,16 @@ type Estado = "formulario" | "a-enviar" | "enviado" | "plano-b";
  *
  * Fluxo: valida → envia por POST para `dadosPessoais.endpointFormulario`
  * (FormSubmit, que entrega o pedido na caixa de email da Micaela) → mostra
- * confirmação. Se o serviço falhar (sem rede, serviço em baixo), cai para o
- * plano B: abre a app de email do visitante com tudo preenchido (`mailto:`).
+ * confirmação. Se o serviço falhar (sem rede, serviço em baixo, domínio ainda
+ * sem ativação), cai para o plano B: abre a app de email do visitante com tudo
+ * preenchido (`mailto:`). O erro técnico do serviço fica só na consola.
  */
 export function FormularioOrcamento({ aberto, fechar }: Props) {
+  const { dadosPessoais, orcamento } = useTextos();
+
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
-  const [tipo, setTipo] = useState(TIPOS[0]);
+  const [tipo, setTipo] = useState(orcamento.tipos[0]);
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState<string | null>(null);
   const [estado, setEstado] = useState<Estado>("formulario");
@@ -36,6 +31,12 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
   const [linkEmail, setLinkEmail] = useState("");
   const [copiado, setCopiado] = useState(false);
   const primeiroCampo = useRef<HTMLInputElement>(null);
+
+  // Se o idioma mudar com o formulário aberto, o tipo escolhido tem de continuar
+  // a existir na lista nova (senão o <select> ficava em branco).
+  useEffect(() => {
+    if (!orcamento.tipos.includes(tipo)) setTipo(orcamento.tipos[0]);
+  }, [orcamento.tipos, tipo]);
 
   // Fecha com Escape e bloqueia o scroll do fundo enquanto está aberto
   useEffect(() => {
@@ -70,11 +71,11 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
   if (!aberto) return null;
 
   const construirLinkEmail = () => {
-    const assunto = `Pedido de orçamento — ${tipo}`;
+    const assunto = orcamento.assunto(tipo);
     const corpo = [
-      `Nome: ${nome.trim()}`,
-      `Email: ${email.trim()}`,
-      `Tipo de projeto: ${tipo}`,
+      `${orcamento.nome}: ${nome.trim()}`,
+      `${orcamento.email}: ${email.trim()}`,
+      `${orcamento.tipo}: ${tipo}`,
       "",
       mensagem.trim(),
     ].join("\n");
@@ -86,9 +87,9 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
   const submeter = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (nome.trim().length < 2) return setErro("Escreve o teu nome.");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setErro("Email inválido.");
-    if (mensagem.trim().length < 10) return setErro("Conta-me um pouco mais (mínimo 10 caracteres).");
+    if (nome.trim().length < 2) return setErro(orcamento.erros.nome);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setErro(orcamento.erros.email);
+    if (mensagem.trim().length < 10) return setErro(orcamento.erros.mensagem);
 
     setErro(null);
     setLinkEmail(construirLinkEmail());
@@ -107,11 +108,11 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({
-          nome: nome.trim(),
+          [orcamento.nome]: nome.trim(),
           email: email.trim(),
-          tipo_projeto: tipo,
+          [orcamento.tipo]: tipo,
           mensagem: mensagem.trim(),
-          _subject: `Pedido de orçamento — ${tipo}`,
+          _subject: orcamento.assunto(tipo),
           _template: "table",
           _captcha: "false",
         }),
@@ -137,10 +138,10 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
           ? String((json as { message?: unknown }).message)
           : "";
       if (detalhe) console.warn("[orcamento] o envio automático falhou:", detalhe);
-      setNota("O envio automático não respondeu desta vez.");
+      setNota(orcamento.avisos.envio);
       setEstado("plano-b");
     } catch {
-      setNota("Parece que estás sem ligação à internet.");
+      setNota(orcamento.avisos.semLigacao);
       setEstado("plano-b");
     }
   };
@@ -155,6 +156,10 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
     }
   };
 
+  const campoClasse =
+    "w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white placeholder-slate-600 transition focus:border-petal-lilac/60";
+  const etiquetaClasse = "mb-1.5 block text-[11px] uppercase tracking-wider text-slate-500";
+
   return (
     <div
       className="fixed inset-0 z-[70] flex items-end justify-center p-3 sm:items-center sm:p-6"
@@ -165,7 +170,7 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
       {/* Fundo escurecido */}
       <button
         type="button"
-        aria-label="Fechar"
+        aria-label={orcamento.planoB.fechar}
         onClick={fechar}
         className="absolute inset-0 cursor-default bg-ink-950/80 backdrop-blur-sm"
       />
@@ -179,7 +184,7 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
         <button
           type="button"
           onClick={fechar}
-          aria-label="Fechar"
+          aria-label={orcamento.planoB.fechar}
           className="absolute right-4 top-4 rounded-lg p-1.5 text-slate-400 transition hover:bg-white/10 hover:text-white"
         >
           <X className="h-4 w-4" />
@@ -192,18 +197,18 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
               <Check className="h-6 w-6 text-petal-mint" />
             </span>
             <h2 id="titulo-orcamento" className="mt-4 font-display text-xl font-bold text-white">
-              Mensagem enviada!
+              {orcamento.enviado.titulo}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              Recebi o teu pedido. Respondo a <strong className="text-slate-200">{email}</strong> em
-              24–48h.
+              {orcamento.enviado.texto} <strong className="text-slate-200">{email}</strong>{" "}
+              {orcamento.enviado.prazo}
             </p>
             <button
               type="button"
               onClick={fechar}
               className="mt-6 inline-flex items-center justify-center rounded-full bg-gradient-to-r from-petal-rose via-petal-lilac to-petal-sky px-6 py-3 text-sm font-semibold text-ink-950 transition hover:brightness-110"
             >
-              Fechar
+              {orcamento.enviado.fechar}
             </button>
           </div>
         )}
@@ -215,11 +220,10 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
               <AlertTriangle className="h-6 w-6 text-petal-amber" />
             </span>
             <h2 id="titulo-orcamento" className="mt-4 font-display text-xl font-bold text-white">
-              Não deu para enviar daqui
+              {orcamento.planoB.titulo}
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              Não percas o que escreveste: carrega no botão abaixo e abre o teu email com tudo
-              já preenchido. Só tens de confirmar o envio.
+              {orcamento.planoB.texto}
               {nota && <span className="mt-1 block text-xs text-slate-500">{nota}</span>}
             </p>
 
@@ -229,7 +233,7 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
                 className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-petal-rose via-petal-lilac to-petal-sky px-6 py-3 text-sm font-semibold text-ink-950 transition hover:brightness-110"
               >
                 <Mail className="h-4 w-4" />
-                Abrir no meu email
+                {orcamento.planoB.abrirEmail}
               </a>
               <button
                 type="button"
@@ -237,14 +241,14 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
                 className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 px-6 py-3 text-sm text-slate-200 transition hover:bg-white/10"
               >
                 <Copy className="h-4 w-4" />
-                {copiado ? "Email copiado!" : `Copiar ${dadosPessoais.email}`}
+                {copiado ? orcamento.planoB.copiado : `${orcamento.planoB.copiar} ${dadosPessoais.email}`}
               </button>
               <button
                 type="button"
                 onClick={() => setEstado("formulario")}
                 className="mt-1 text-xs text-slate-500 transition hover:text-white"
               >
-                Voltar ao formulário
+                {orcamento.planoB.voltar}
               </button>
             </div>
           </div>
@@ -254,71 +258,63 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
           /* ── Formulário ── */
           <form onSubmit={submeter} className="relative">
             <h2 id="titulo-orcamento" className="font-display text-xl font-bold text-white">
-              Pedir orçamento
+              {orcamento.titulo}
             </h2>
-            <p className="mt-1.5 text-[13px] text-slate-400">Resposta em 24–48h. Sem compromisso.</p>
+            <p className="mt-1.5 text-[13px] text-slate-400">{orcamento.subtitulo}</p>
 
             <div className="mt-5 space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="mb-1.5 block text-[11px] uppercase tracking-wider text-slate-500">
-                    Nome
-                  </span>
+                  <span className={etiquetaClasse}>{orcamento.nome}</span>
                   <input
                     ref={primeiroCampo}
                     value={nome}
                     onChange={(e) => setNome(e.target.value)}
-                    placeholder="O teu nome"
+                    placeholder={orcamento.nomePlaceholder}
                     autoComplete="name"
                     required
-                    className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white placeholder-slate-600 transition focus:border-petal-lilac/60"
+                    className={campoClasse}
                   />
                 </label>
 
                 <label className="block">
-                  <span className="mb-1.5 block text-[11px] uppercase tracking-wider text-slate-500">
-                    Email
-                  </span>
+                  <span className={etiquetaClasse}>{orcamento.email}</span>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="nome@email.com"
+                    placeholder={orcamento.emailPlaceholder}
                     autoComplete="email"
                     required
-                    className="w-full rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white placeholder-slate-600 transition focus:border-petal-lilac/60"
+                    className={campoClasse}
                   />
                 </label>
               </div>
 
               <label className="block">
-                <span className="mb-1.5 block text-[11px] uppercase tracking-wider text-slate-500">
-                  Tipo de projeto
-                </span>
+                <span className={etiquetaClasse}>{orcamento.tipo}</span>
                 <select
                   value={tipo}
                   onChange={(e) => setTipo(e.target.value)}
-                  className="w-full appearance-none rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white transition focus:border-petal-lilac/60"
+                  className={`${campoClasse} appearance-none`}
                 >
-                  {TIPOS.map((t) => (
-                    <option key={t} value={t} className="bg-ink-800 text-white">
-                      {t}
+                  {orcamento.tipos.map((opcao) => (
+                    <option key={opcao} value={opcao} className="bg-ink-800 text-white">
+                      {opcao}
                     </option>
                   ))}
                 </select>
               </label>
 
               <label className="block">
-                <span className="mb-1.5 block text-[11px] uppercase tracking-wider text-slate-500">
-                  Mensagem
-                </span>
+                <span className={etiquetaClasse}>{orcamento.mensagem}</span>
                 <textarea
                   value={mensagem}
                   onChange={(e) => setMensagem(e.target.value)}
                   rows={4}
-                  placeholder="O que precisas? Para quando? Tens algo já feito?"
+                  placeholder={orcamento.mensagemPlaceholder}
                   required
-                  className="w-full resize-none rounded-xl border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-sm text-white placeholder-slate-600 transition focus:border-petal-lilac/60"
+                  className={`${campoClasse} resize-none`}
                 />
               </label>
             </div>
@@ -335,11 +331,9 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
               className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-petal-rose via-petal-lilac to-petal-sky px-6 py-3 text-sm font-semibold text-ink-950 transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-70"
             >
               <Send className="h-4 w-4" />
-              {estado === "a-enviar" ? "A enviar…" : "Enviar pedido"}
+              {estado === "a-enviar" ? orcamento.aEnviar : orcamento.enviar}
             </button>
-            <p className="mt-3 text-center text-[11px] text-slate-600">
-              Só uso os teus dados para responder a este pedido.
-            </p>
+            <p className="mt-3 text-center text-[11px] text-slate-600">{orcamento.privacidade}</p>
           </form>
         )}
       </div>

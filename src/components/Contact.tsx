@@ -1,5 +1,5 @@
 import { Mail } from "lucide-react";
-import { contacto, dadosPessoais } from "../data/site";
+import { useTextos } from "../i18n/idioma";
 import { Button } from "./ui/Button";
 import { PetalGlow } from "./ui/PetalGlow";
 import { useOrcamento } from "./orcamento/contexto";
@@ -7,6 +7,8 @@ import { useOrcamento } from "./orcamento/contexto";
 /** Última chamada à ação: contacto direto e garantias do processo. */
 export function Contact() {
   const { abrir } = useOrcamento();
+  const { contacto, dadosPessoais } = useTextos();
+
   return (
     <section id="contacto" className="relative overflow-hidden py-20 sm:py-28">
       <PetalGlow className="left-1/2 top-0 h-72 w-[34rem] -translate-x-1/2 rounded-full bg-petal-lilac/15" />
@@ -39,7 +41,7 @@ export function Contact() {
           </div>
 
           <p className="mt-5 text-xs text-slate-500">
-            Ou escreve diretamente para{" "}
+            {contacto.escrevePara}{" "}
             <a
               href={`mailto:${dadosPessoais.email}`}
               className="font-medium text-slate-300 underline decoration-white/20 underline-offset-4 transition hover:text-white"

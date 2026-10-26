@@ -1,5 +1,5 @@
 import { ArrowRight, Mail } from "lucide-react";
-import { hero } from "../data/site";
+import { useTextos } from "../i18n/idioma";
 import { Badge } from "./ui/Badge";
 import { Button } from "./ui/Button";
 import { PetalGlow } from "./ui/PetalGlow";
@@ -9,6 +9,8 @@ import { useOrcamento } from "./orcamento/contexto";
 /** Secção de abertura: identidade, proposta de valor e chamadas à ação. */
 export function Hero() {
   const { abrir } = useOrcamento();
+  const { hero } = useTextos();
+
   // Divide o título para aplicar o gradiente das pétalas só na marca "Camilly Suite".
   const [antes, depois] = hero.titulo.split(hero.tituloRealce);
 

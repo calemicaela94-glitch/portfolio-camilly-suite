@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import { suite } from "../data/site";
+import { useTextos } from "../i18n/idioma";
 import { acento } from "../lib/cores";
 
 /**
@@ -7,6 +7,8 @@ import { acento } from "../lib/cores";
  * Substitui a maquete de telemóvel (essa fica só no projeto em destaque, para não repetir).
  */
 export function SuiteCard() {
+  const { suite } = useTextos();
+
   return (
     <div className="relative mx-auto w-full max-w-sm">
       <div
@@ -20,7 +22,7 @@ export function SuiteCard() {
             Camilly Suite
           </p>
           <span className="rounded-full bg-petal-mint/15 px-2 py-0.5 text-[10px] font-semibold text-petal-mint">
-            3 módulos
+            {suite.cartao.total}
           </span>
         </div>
 
@@ -51,7 +53,7 @@ export function SuiteCard() {
           href="#suite"
           className="mt-5 flex items-center justify-between rounded-xl px-1 py-1 text-[12px] font-medium text-slate-400 transition hover:text-white"
         >
-          Ver o ecossistema
+          {suite.cartao.verEcossistema}
           <ArrowUpRight className="h-4 w-4" />
         </a>
       </div>

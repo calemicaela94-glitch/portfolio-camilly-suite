@@ -1,5 +1,5 @@
 import { Hammer } from "lucide-react";
-import { outrosProjetos } from "../data/site";
+import { useTextos } from "../i18n/idioma";
 import { acento } from "../lib/cores";
 import { Badge } from "./ui/Badge";
 import { Section } from "./ui/Section";
@@ -7,12 +7,13 @@ import { Section } from "./ui/Section";
 /**
  * Trabalho em curso, separado do que já está publicado.
  *
- * Antes cada cartão repetia "Em desenvolvimento" (três vezes seguidas), o que dava
- * a ideia de que nada acabava. Agora o estado é dito UMA vez, no cabeçalho da
- * secção, e o cartão mostra só o que o projeto vai ser. Quando a Micaela indicar
- * uma percentagem real, basta preencher `progresso` em `site.ts` e a barra aparece.
+ * O estado é dito UMA vez, no cabeçalho da secção, em vez de se repetir em cada
+ * cartão. Quando a Micaela indicar uma percentagem real, basta preencher
+ * `progresso` em `textos.ts` e a barra aparece.
  */
 export function OutrosProjetos() {
+  const { outrosProjetos } = useTextos();
+
   return (
     <Section
       id="projetos-clientes"

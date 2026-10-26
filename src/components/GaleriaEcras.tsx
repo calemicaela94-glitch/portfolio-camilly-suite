@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { useTextos } from "../i18n/idioma";
 
 /**
  * Capturas de ecrã reais das apps.
@@ -33,25 +34,30 @@ function descrever(caminho: string): string {
   return nome.replace(/\.[^.]+$/, "").replace(/^[0-9]+[-_ ]*/, "").replace(/[-_]+/g, " ").trim();
 }
 
-/** Lista as capturas disponíveis, já ordenadas e com texto alternativo. */
-export function obterEcras(limite = 3): Ecra[] {
+/**
+ * Lista as capturas disponíveis, já ordenadas.
+ * `prefixoAlt` vem do idioma ativo (ver `galeria.altPrefixo` em `textos.ts`).
+ */
+export function obterEcras(prefixoAlt: string, limite = 3): Ecra[] {
   return Object.keys(ficheiros)
     .sort((a, b) => a.localeCompare(b, "pt"))
     .slice(0, limite)
     .map((caminho) => ({
       src: ficheiros[caminho],
-      alt: `Captura de ecrã da app Camilly: ${descrever(caminho)}`,
+      alt: `${prefixoAlt} ${descrever(caminho)}`,
     }));
 }
 
 /** Moldura de telemóvel à volta de uma captura real. */
 function MolduraEcra({ ecra, onAbrir }: { ecra: Ecra; onAbrir: () => void }) {
+  const { galeria } = useTextos();
+
   return (
     <button
       type="button"
       onClick={onAbrir}
       className="group relative w-full rounded-[2rem] border border-white/15 bg-ink-800 p-1.5 shadow-[0_30px_60px_-25px_rgba(0,0,0,0.9)] transition hover:border-petal-lilac/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-petal-lilac"
-      aria-label={`Ampliar ${ecra.alt}`}
+      aria-label={`${galeria.ampliar}: ${ecra.alt}`}
     >
       <span className="absolute left-1/2 top-3 z-10 h-1 w-10 -translate-x-1/2 rounded-full bg-white/25" />
       <img
@@ -71,6 +77,7 @@ function MolduraEcra({ ecra, onAbrir }: { ecra: Ecra; onAbrir: () => void }) {
  * Recebe a lista já preparada por `obterEcras()`.
  */
 export function GaleriaEcras({ ecras }: { ecras: Ecra[] }) {
+  const { galeria } = useTextos();
   const [aberto, setAberto] = useState<number | null>(null);
 
   // Escape fecha e, enquanto a imagem está ampliada, o fundo não faz scroll
@@ -105,14 +112,14 @@ export function GaleriaEcras({ ecras }: { ecras: Ecra[] }) {
         >
           <button
             type="button"
-            aria-label="Fechar"
+            aria-label={galeria.fechar}
             onClick={() => setAberto(null)}
             className="absolute inset-0 cursor-zoom-out"
           />
           <button
             type="button"
             onClick={() => setAberto(null)}
-            aria-label="Fechar"
+            aria-label={galeria.fechar}
             className="absolute right-5 top-5 rounded-lg p-2 text-slate-300 transition hover:bg-white/10 hover:text-white"
           >
             <X className="h-5 w-5" />

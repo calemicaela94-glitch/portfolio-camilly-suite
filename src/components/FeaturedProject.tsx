@@ -1,5 +1,5 @@
 import { CheckCircle2, ExternalLink, Sparkles } from "lucide-react";
-import { projetoDestaque } from "../data/site";
+import { useTextos } from "../i18n/idioma";
 import { Badge } from "./ui/Badge";
 import { Button } from "./ui/Button";
 import { Section } from "./ui/Section";
@@ -11,16 +11,19 @@ import { PhoneMock } from "./PhoneMock";
  * É a secção que convence um cliente de que o produto chega mesmo à produção.
  */
 export function FeaturedProject() {
+  const { destaque, galeria } = useTextos();
+  const { projeto } = destaque;
+
   // Capturas reais, se já existirem em `src/assets/ecras/`.
   // Sem imagens, cai na maquete em código — o site nunca fica com um buraco.
-  const ecras = obterEcras();
+  const ecras = obterEcras(galeria.altPrefixo);
 
   return (
     <Section
       id="projetos"
-      eyebrow={projetoDestaque.eyebrow}
-      titulo="Uma app real, na loja e a funcionar"
-      descricao="Software publicado, com utilizadores e manutenção. Não é maquete."
+      eyebrow={destaque.eyebrow}
+      titulo={destaque.titulo}
+      descricao={destaque.descricao}
     >
       <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-white/[0.06] via-white/[0.02] to-transparent p-6 shadow-card sm:p-10">
         {/* Brilho de fundo */}
@@ -37,20 +40,20 @@ export function FeaturedProject() {
           <div>
             <Badge cor="mint" pulsar>
               <Sparkles className="h-3 w-3" />
-              {projetoDestaque.badge}
+              {projeto.badge}
             </Badge>
 
             <h3 className="mt-5 font-display text-2xl font-bold text-white sm:text-3xl">
-              {projetoDestaque.nome}
+              {projeto.nome}
             </h3>
-            <p className="mt-2 text-sm font-medium text-petal-rose">{projetoDestaque.tagline}</p>
+            <p className="mt-2 text-sm font-medium text-petal-rose">{projeto.tagline}</p>
             <p className="mt-5 text-sm leading-relaxed text-slate-400 sm:text-base">
-              {projetoDestaque.descricao}
+              {projeto.descricao}
             </p>
 
             {/* O que a app faz */}
             <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2">
-              {projetoDestaque.destaques.map((item) => (
+              {projeto.destaques.map((item) => (
                 <li key={item} className="flex items-start gap-2 text-[13px] leading-snug text-slate-300">
                   <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-petal-mint" />
                   <span>{item}</span>
@@ -60,7 +63,7 @@ export function FeaturedProject() {
 
             {/* Stack */}
             <div className="mt-7 flex flex-wrap gap-2">
-              {projetoDestaque.stack.map((tecnologia) => (
+              {projeto.stack.map((tecnologia) => (
                 <span
                   key={tecnologia}
                   className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-[11px] text-slate-400"
@@ -71,12 +74,12 @@ export function FeaturedProject() {
             </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href={projetoDestaque.linkLoja} variante="primario" target="_blank" rel="noopener noreferrer">
-                Ver na Google Play Store
+              <Button href={projeto.linkLoja} variante="primario" target="_blank" rel="noopener noreferrer">
+                {projeto.ctaLoja}
                 <ExternalLink className="h-4 w-4" />
               </Button>
               <Button href="#suite" variante="secundario">
-                Conhecer a suite
+                {projeto.ctaSuite}
               </Button>
             </div>
           </div>
@@ -85,7 +88,7 @@ export function FeaturedProject() {
           <div>
             {ecras.length > 0 ? <GaleriaEcras ecras={ecras} /> : <PhoneMock />}
             <dl className="mt-10 grid grid-cols-3 gap-3 border-t border-white/10 pt-6">
-              {projetoDestaque.metricas.map((metrica) => (
+              {projeto.metricas.map((metrica) => (
                 <div key={metrica.legenda} className="text-center">
                   <dt className="font-display text-xs font-bold text-white sm:text-sm">{metrica.valor}</dt>
                   <dd className="mt-1 text-[10px] leading-snug text-slate-500 sm:text-[11px]">
