@@ -134,6 +134,22 @@ Ganho: filtra curiosos, atrai clientes sérios, e reduz conversas de 20 mensagen
 
 ---
 
+## Fase 7 — Site bilingue PT / EN ⏱️ feito a 26/10/2026
+
+- [x] Todo o texto saiu dos componentes e vive em dois ficheiros:
+      [`textos.ts`](src/data/textos.ts:1) (português) e [`textos.en.ts`](src/data/textos.en.ts:1)
+      (inglês). O inglês é tipado como `Conteudo`, por isso esquecer um campo dá erro de
+      compilação — as duas versões nunca ficam dessincronizadas.
+- [x] Contexto em [`idioma.tsx`](src/i18n/idioma.tsx:1): o idioma escolhido fica em
+      `localStorage`, o `<html lang>` e o título/descrição da página acompanham, e por
+      omissão usa-se o idioma do browser (visitante português vê PT, estrangeiro vê EN).
+- [x] Alternador [`SeletorIdioma.tsx`](src/components/SeletorIdioma.tsx:1) na barra de topo,
+      no menu móvel (versão com nomes completos) e no rodapé. Botões com `aria-pressed`.
+- [ ] Quando houver preços no site, escrever também nos dois idiomas (é um campo novo
+      em cada ficheiro de texto).
+
+---
+
 ## Ordem de execução hoje
 
 | # | Fase | Depende de ti? | Tempo |
