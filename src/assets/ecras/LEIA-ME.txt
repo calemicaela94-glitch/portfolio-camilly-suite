@@ -1,0 +1,26 @@
+CAPTURAS DE ECRÃ DAS APPS
+=========================
+
+Como adicionar imagens (não é preciso mexer em código nenhum):
+
+1. Arrasta os ficheiros para ESTA pasta (src/assets/ecras/).
+   Formatos aceites: .png, .jpg, .jpeg, .webp, .avif
+
+2. Dá-lhes nomes com número à frente para controlar a ordem em que aparecem:
+      01-meta-anual.png
+      02-sequencia-diaria.png
+      03-estatisticas.png
+
+3. São mostradas no máximo 3 imagens (as três primeiras por ordem alfabética),
+   em molduras de telemóvel, e ampliam ao clicar.
+
+4. Se esta pasta estiver vazia, o site mostra a maquete desenhada em código
+   (PhoneMock) — nunca fica um espaço em branco.
+
+Dicas para as capturas ficarem bem:
+- Usar o telemóvel na vertical e o ecrã inteiro (sem barra de notificações).
+- Não mostrar dados pessoais reais (nomes de crianças, e-mails, moradas).
+- Ideal: largura entre 800 e 1200 px. Se o ficheiro tiver mais de 300 KB,
+  vale a pena reduzir para o site carregar rápido.
+- O texto alternativo de acessibilidade é gerado do nome do ficheiro,
+  por isso nomes descritivos ajudam ("03-estatisticas" vira "estatisticas").

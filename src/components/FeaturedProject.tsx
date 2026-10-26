@@ -3,6 +3,7 @@ import { projetoDestaque } from "../data/site";
 import { Badge } from "./ui/Badge";
 import { Button } from "./ui/Button";
 import { Section } from "./ui/Section";
+import { GaleriaEcras, obterEcras } from "./GaleriaEcras";
 import { PhoneMock } from "./PhoneMock";
 
 /**
@@ -10,6 +11,10 @@ import { PhoneMock } from "./PhoneMock";
  * É a secção que convence um cliente de que o produto chega mesmo à produção.
  */
 export function FeaturedProject() {
+  // Capturas reais, se já existirem em `src/assets/ecras/`.
+  // Sem imagens, cai na maquete em código — o site nunca fica com um buraco.
+  const ecras = obterEcras();
+
   return (
     <Section
       id="projetos"
@@ -78,7 +83,7 @@ export function FeaturedProject() {
 
           {/* Ecrã da app + métricas */}
           <div>
-            <PhoneMock />
+            {ecras.length > 0 ? <GaleriaEcras ecras={ecras} /> : <PhoneMock />}
             <dl className="mt-10 grid grid-cols-3 gap-3 border-t border-white/10 pt-6">
               {projetoDestaque.metricas.map((metrica) => (
                 <div key={metrica.legenda} className="text-center">

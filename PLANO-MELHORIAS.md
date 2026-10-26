@@ -35,17 +35,22 @@ Isto não bloqueia o resto, mas sem isto as fases 2 e 4 ficam a meio.
 
 Porque: um portefólio de software sem imagens não se vende. É a crítica nº1.
 
-- [ ] Criar `public/ecras/` e guardar as imagens em `.webp` (largura ~900px, < 200 KB cada).
-- [ ] Compor uma moldura de telemóvel bonita em CSS à volta das imagens (reaproveitar o estilo
-      do [`PhoneMock`](src/components/PhoneMock.tsx:23)) — assim os prints ficam elegantes.
-- [ ] Novo componente `GaleriaEcras.tsx`: grelha de 2–3 ecrãs + clique para ampliar (lightbox
-      simples, sem bibliotecas novas).
-- [ ] `site.ts`: novo campo `ecras: { src, alt }[]` em `projetoDestaque`.
-- [ ] [`FeaturedProject.tsx`](src/components/FeaturedProject.tsx:81): usa a galeria quando
-      existirem imagens; se `ecras` estiver vazio, mantém a maquete atual (nunca quebra o site).
-- [ ] `alt` descritivo em todas as imagens (acessibilidade + SEO).
-- [ ] Se não houver prints hoje: gero eu as imagens a partir da maquete com o browser
-      (`chromium --headless --screenshot`), ficam em ficheiro real e prontas a substituir depois.
+Estrutura pronta e a funcionar — falta só largar as imagens.
+
+- [x] Pasta criada: **`src/assets/ecras/`** (e não `public/`, porque assim o Vite trata os
+      ficheiros, lhes dá nome com hash para cache e não é preciso importar nada à mão).
+      Instruções dentro da pasta em [`LEIA-ME.txt`](src/assets/ecras/LEIA-ME.txt:1).
+- [x] Componente [`GaleriaEcras.tsx`](src/components/GaleriaEcras.tsx:1): deteta sozinho as
+      imagens da pasta (`import.meta.glob`), põe moldura de telemóvel, grelha de 3 e ampliação
+      ao clicar com fechar por Escape — sem bibliotecas novas.
+- [x] `alt` gerado do nome do ficheiro (`01-meta-anual.png` → "meta anual").
+- [x] [`FeaturedProject.tsx`](src/components/FeaturedProject.tsx:81): mostra a galeria quando há
+      imagens e cai na maquete [`PhoneMock`](src/components/PhoneMock.tsx:13) quando não há.
+- [ ] **Receber os prints.** ⚠️ A pasta `/home/vevaz/portfolio-micaela/prints/` está no
+      computador da Micaela, não está ligada a este container — os ficheiros têm de ser
+      arrastados para `src/assets/ecras/` no Explorador do VS Code.
+- [ ] Depois de chegarem: verificar peso (ideal < 300 KB cada) e confirmar que ampliam bem.
+- [ ] Ordem alfabética controla a ordem: `01-…`, `02-…`, `03-…`.
 
 Ganho: o site passa a mostrar produto, não descrição de produto.
 
@@ -55,12 +60,16 @@ Ganho: o site passa a mostrar produto, não descrição de produto.
 
 Porque: 5 avisos de "em desenvolvimento" fazem pensar que nada está acabado.
 
-- [ ] `site.ts`: acrescentar a cada projeto `fase: "publicado" | "beta" | "construcao"` e
-      `progresso: number` (0–100) + `previsao: string` (ex.: "beta em janeiro").
-- [ ] [`OutrosProjetos.tsx`](src/components/OutrosProjetos.tsx:1): agrupar em dois blocos —
-      "Publicado e a funcionar" e "Em construção (com % real)" — com barra fina de progresso.
-- [ ] Mudar o título da secção: "Outros projetos em desenvolvimento" → "Também em construção".
-- [ ] Badges de estado com cores diferentes (verde = publicado, âmbar = beta, cinza = construção).
+- [x] `site.ts`: campo `progresso?: number` no tipo `Projeto` — **opcional de propósito**, só se
+      mostra a barra quando o número for verdadeiro (nada de percentagens inventadas).
+- [x] [`OutrosProjetos.tsx`](src/components/OutrosProjetos.tsx:1): o estado deixou de se repetir
+      em cada cartão e passou a um aviso único no topo da secção ("3 projetos em construção ·
+      nenhum publicado ainda").
+- [x] Título mudado: "Outros projetos em desenvolvimento" → "Em construção: o que vem a seguir",
+      com a frase que liga ao que está publicado ("A app publicada está aí em cima").
+- [ ] Quando a Micaela disser as percentagens reais de cada projeto, preencher `progresso`
+      (aparece a barra colorida automaticamente).
+- [ ] Ícone de "em construção" (martelo) no aviso da secção.
 
 Ganho: em vez de "nunca acabou nada", lê-se "já entregou, e está a construir mais".
 

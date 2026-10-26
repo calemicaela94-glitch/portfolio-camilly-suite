@@ -55,7 +55,14 @@ export interface Servico {
 export interface Projeto {
   nome: string;
   tipo: string;
+  /** Fase em que está. Escrever em português simples ("Em construção", "Beta privada"). */
   estado: string;
+  /**
+   * Percentagem real de conclusão (0–100). OPCIONAL de propósito:
+   * só se preenche quando o número for verdadeiro — sem ele, o cartão
+   * não mostra barra nenhuma. Nunca inventar valores.
+   */
+  progresso?: number;
   descricao: string;
   stack: string[];
   cor: "rose" | "lilac" | "mint" | "amber" | "sky";
@@ -176,8 +183,11 @@ export const suite = {
 /** Trabalho para clientes — áreas diferentes, o mesmo rigor. */
 export const outrosProjetos = {
   eyebrow: "Outros projetos",
-  titulo: "Outros projetos em desenvolvimento",
-  descricao: "Estética, formação médica e produtividade — áreas bem diferentes, o mesmo rigor.",
+  titulo: "Em construção: o que vem a seguir",
+  descricao:
+    "A app publicada está aí em cima. Estes três ainda não estão na loja — são os próximos a chegar.",
+  /** Estado dito UMA vez, para não repetir "em desenvolvimento" em cada cartão. */
+  avisoEstado: "3 projetos em construção · nenhum publicado ainda",
   itens: [
     {
       nome: "Cat Lash Designer",
