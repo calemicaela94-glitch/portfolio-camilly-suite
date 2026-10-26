@@ -96,13 +96,15 @@ Ganho: filtra curiosos, atrai clientes sérios, e reduz conversas de 20 mensagen
 - [x] **E-mail trocado a 25/10/2026:** `camillyhelp@outlook.pt` em
       [`site.ts`](src/data/site.ts:68) (contacto + endpoint do FormSubmit). Os componentes todos
       leem daí, por isso mudou-se num sítio só.
-- [x] Endpoint testado com `curl`: respondeu `This form needs Activation` — ou seja, está vivo
-      e o e-mail de ativação foi enviado.
-- [ ] ⚠️ **Clicar no link "Activate Form"** desse e-mail (ver spam/lixo do Outlook).
-      Enquanto não for ativado, os pedidos de orçamento NÃO chegam.
-- [ ] Depois de ativado, enviar um pedido de teste pelo site e confirmar que chega à caixa.
-- [ ] Fallback: já existe (abre o `mailto:` preenchido). Falta só trocar o texto técnico
-      "O serviço de envio não respondeu como esperado" por uma frase para humanos.
+- [x] Formulário **ativado** para `portfolio-camilly-suite.vercel.app` — envio de teste
+      respondeu `success: true`.
+- [x] ⚠️ **Descoberta: a ativação do FormSubmit é POR DOMÍNIO.** O mesmo e-mail funciona no
+      Vercel e pede ativação nova no `calemicaela94-glitch.github.io`. É clicar em
+      "Activate Form" outra vez (já foi enviado o pedido de ativação desse domínio).
+- [ ] Se um dia o site mudar de domínio (ex.: `camilly.pt`), repetir a ativação nesse domínio.
+- [x] Fallback com mensagem para humanos: o erro técnico em inglês deixou de aparecer ao
+      visitante (fica na consola para diagnóstico) e o ecrã passa a explicar em português
+      que basta abrir o e-mail já preenchido.
 - [ ] Quando o domínio `camilly.pt` existir, trocar por `ola@camilly.pt` (1 linha + ativação nova).
 
 ---

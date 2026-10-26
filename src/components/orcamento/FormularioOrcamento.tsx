@@ -130,14 +130,17 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
         return;
       }
 
+      // O detalhe técnico do serviço vem em inglês e não diz nada a um cliente.
+      // Fica só na consola (para diagnóstico) e o ecrã mostra uma frase simples.
       const detalhe =
         typeof json === "object" && json !== null && "message" in json
           ? String((json as { message?: unknown }).message)
           : "";
-      setNota(detalhe || "O serviço de envio não respondeu como esperado.");
+      if (detalhe) console.warn("[orcamento] o envio automático falhou:", detalhe);
+      setNota("O envio automático não respondeu desta vez.");
       setEstado("plano-b");
     } catch {
-      setNota("Sem ligação ao serviço de envio.");
+      setNota("Parece que estás sem ligação à internet.");
       setEstado("plano-b");
     }
   };
@@ -215,8 +218,9 @@ export function FormularioOrcamento({ aberto, fechar }: Props) {
               Não deu para enviar daqui
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              A mensagem não saiu. Envia-a pelo teu email — está tudo preenchido, só tens de
-              carregar em Enviar. {nota && <span className="text-slate-500">({nota})</span>}
+              Não percas o que escreveste: carrega no botão abaixo e abre o teu email com tudo
+              já preenchido. Só tens de confirmar o envio.
+              {nota && <span className="mt-1 block text-xs text-slate-500">{nota}</span>}
             </p>
 
             <div className="mt-6 flex flex-col gap-2.5">
