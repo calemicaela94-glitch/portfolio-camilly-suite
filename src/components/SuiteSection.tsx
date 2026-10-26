@@ -69,9 +69,8 @@ export function SuiteSection() {
                 ))}
               </ul>
 
-              <p className="relative mt-6 border-t border-white/10 pt-4 text-[11px] uppercase tracking-wider text-slate-500">
-                {modulo.estado}
-              </p>
+              {/* O estado deixou de se repetir em cada cartão: é dito uma vez no
+                  cabeçalho da secção (ver `suite.descricao` em site.ts). */}
             </article>
           );
         })}

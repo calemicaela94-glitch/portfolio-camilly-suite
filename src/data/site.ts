@@ -141,7 +141,7 @@ export const suite = {
   eyebrow: "Produto próprio",
   titulo: "Camilly Suite: um ecossistema, não apps soltas",
   descricao:
-    "Bem-estar e desenvolvimento pessoal num só lugar. Módulos independentes, a mesma conta, os mesmos assistentes de IA.",
+    "Bem-estar e desenvolvimento pessoal num só lugar. Módulos independentes, a mesma conta, os mesmos assistentes de IA. Os três módulos estão em construção — o Growth Petal é o mais adiantado.",
   pilares: [
     { icone: Bot, titulo: "IA que acompanha", descricao: "Buddys que ajustam o plano em tempo real." },
     { icone: Layers, titulo: "Modular", descricao: "Cada módulo vive sozinho e liga-se aos outros." },
