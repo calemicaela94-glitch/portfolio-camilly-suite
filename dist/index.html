@@ -9,12 +9,29 @@
       name="description"
       content="Software Developer focada em aplicações móveis e web com IA integrada. Criadora da Camilly Suite e da Camilly Reading Tracker, disponível na Google Play Store."
     />
+    <link rel="canonical" href="https://portfolio-camilly-suite.vercel.app/" />
+
+    <!-- Partilha em redes sociais / WhatsApp / LinkedIn -->
+    <meta property="og:site_name" content="Micaela Calé · Camilly Suite" />
     <meta property="og:title" content="Software Developer & Criadora da Camilly Suite — Micaela Calé" />
     <meta
       property="og:description"
       content="Transformo ideias em aplicações funcionais, escaláveis e com IA integrada. Do conceito à produção na Google Play Store."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://portfolio-camilly-suite.vercel.app/" />
+    <meta property="og:image" content="https://portfolio-camilly-suite.vercel.app/og-image.jpg" />
+    <meta property="og:image:alt" content="Ecrã da app Camilly Reading Tracker" />
+    <meta property="og:locale" content="pt_PT" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Micaela Calé · Camilly Suite" />
+    <meta
+      name="twitter:description"
+      content="Apps móveis e web com IA integrada. Uma app publicada na Google Play Store. Do conceito à produção, sem intermediários."
+    />
+    <meta name="twitter:image" content="https://portfolio-camilly-suite.vercel.app/og-image.jpg" />
+
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%B8%3C/text%3E%3C/svg%3E" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -22,6 +39,37 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sora:wght@400;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Dados estruturados: ajudam o Google a perceber quem é e o que está publicado -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "@id": "https://portfolio-camilly-suite.vercel.app/#pessoa",
+            "name": "Micaela Calé",
+            "alternateName": "Camilly",
+            "jobTitle": "Software Developer",
+            "email": "mailto:camillyhelp@outlook.pt",
+            "url": "https://portfolio-camilly-suite.vercel.app/",
+            "knowsAbout": ["React", "React Native", "Expo", "TypeScript", "Supabase", "Artificial Intelligence"],
+            "knowsLanguage": ["pt-PT", "en"]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Camilly Reading Tracker",
+            "applicationCategory": "LifestyleApplication",
+            "operatingSystem": "Android",
+            "url": "https://play.google.com/store/apps/details?id=com.camillyreading.tracker",
+            "installUrl": "https://play.google.com/store/apps/details?id=com.camillyreading.tracker",
+            "author": { "@id": "https://portfolio-camilly-suite.vercel.app/#pessoa" },
+            "description": "App Android de metas de leitura, sequências diárias, lembretes e estatísticas.",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
+          }
+        ]
+      }
+    </script>
     <script type="module" crossorigin src="./assets/index-BeZkCui3.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-w7Pvj42Z.css">
   </head>

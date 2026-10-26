@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap principal (domínio canónico do portefólio)
+Sitemap: https://portfolio-camilly-suite.vercel.app/sitemap.xml
