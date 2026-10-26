@@ -46,11 +46,17 @@ Estrutura pronta e a funcionar — falta só largar as imagens.
 - [x] `alt` gerado do nome do ficheiro (`01-meta-anual.png` → "meta anual").
 - [x] [`FeaturedProject.tsx`](src/components/FeaturedProject.tsx:81): mostra a galeria quando há
       imagens e cai na maquete [`PhoneMock`](src/components/PhoneMock.tsx:13) quando não há.
-- [ ] **Receber os prints.** ⚠️ A pasta `/home/vevaz/portfolio-micaela/prints/` está no
-      computador da Micaela, não está ligada a este container — os ficheiros têm de ser
-      arrastados para `src/assets/ecras/` no Explorador do VS Code.
-- [ ] Depois de chegarem: verificar peso (ideal < 300 KB cada) e confirmar que ampliam bem.
-- [ ] Ordem alfabética controla a ordem: `01-…`, `02-…`, `03-…`.
+- [x] **Imagens reais obtidas a 26/10/2026** — não da pasta da Micaela (está no disco dela,
+      fora deste container), mas da **ficha oficial da app na Play Store**, que é a fonte
+      legítima e pública: `01-calendario-leitura.jpg` (165 KB), `02-amigos-e-catalogo.jpg`
+      (116 KB), `03-adicionar-livro.jpg` (99 KB). Peso dentro do aceitável.
+- [ ] ⚠️ **Fraqueza conhecida:** as capturas oficiais apanham estados vazios
+      ("A tua lista está vazia", "Ainda sem resenhas"). Funcionam, mas não vendem.
+      O ideal é substituir por ecrãs com livros e estatísticas reais — basta largar ficheiros
+      novos na pasta com os mesmos nomes e o site atualiza-se.
+- [ ] **Sugestão extra (fora do site):** atualizar também as capturas da ficha da Play Store,
+      que hoje mostram o mesmo problema — quem vê a loja vê uma app vazia.
+- [x] Ordem alfabética controla a ordem: `01-…`, `02-…`, `03-…`.
 
 Ganho: o site passa a mostrar produto, não descrição de produto.
 
